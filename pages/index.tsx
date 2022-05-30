@@ -4,19 +4,19 @@ const Home: NextPage = () => {
   return (
     <div>
       {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-        <div key={i}>
-          <div>
-            <div />
-            <div>
-              <h3>New iPhone 14</h3>
-              <span>Black</span>
-              <span>$95</span>
+        <div key={i} className="flex justify-between px-5 py-5 select-none border-b">
+          <div className="flex items-center">
+            <div className="w-20 h-20 bg-gray-500 mr-2 cursor-pointer shadow-md" />
+            <div className="flex flex-col">
+              <h3 className="font-semibold text-gray-600 text-[16px]  cursor-pointer">New iPhone 14</h3>
+              <span className="font-medium text-[12px] text-gray-500">Black</span>
+              <span className="font-bold text-lg text-orange-500 cursor-pointer">$95</span>
             </div>
           </div>
-          <div>
-            <div>
+          <div className="flex items-end">
+            <div className="flex items-center mr-3 text-sm">
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 mr-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -31,9 +31,9 @@ const Home: NextPage = () => {
               </svg>
               <span>1</span>
             </div>
-            <div>
+            <div className="flex items-center text-sm">
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4  mr-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -51,7 +51,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       ))}
-      <button>
+      <button className="fixed bottom-7 right-7 bg-orange-500 p-2 rounded-full text-white shadow-lg hover:bg-orange-600 transition-color">
         <svg
           className="h-6 w-6"
           xmlns="http://www.w3.org/2000/svg"
