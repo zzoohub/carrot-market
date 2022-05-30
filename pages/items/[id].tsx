@@ -3,19 +3,21 @@ import type { NextPage } from "next";
 const ItemDetail: NextPage = () => {
   return (
     <div>
-      <div>
-        <div />
-        <div>
-          <div />
+      <div className="p-5">
+        <div className="w-full h-96 bg-gray-500" />
+        <div className="flex items-center mt-4">
+          <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
           <div>
-            <p>Steve Jebs</p>
-            <p>View profile &rarr;</p>
+            <p className="font-bold text-sm">Steve Jebs</p>
+            <p className="text-gray-600 text-xs mt-1">View profile &rarr;</p>
           </div>
         </div>
-        <div>
-          <h1>Galaxy S50</h1>
-          <p>$140</p>
-          <p>
+        <div className="mt-3">
+          <h1 className="text-sm text-gray-600 font-medium select-none">
+            Galaxy S50
+          </h1>
+          <p className="text-[22px] font-bold select-none">$140</p>
+          <p className="mt-2 text-[12px] text-justify">
             My money&apos;s in that office, right? If she start giving me some
             bullshit about it ain&apos;t there, and we got to go someplace else
             and get it, I&apos;m gonna shoot you in the head then and there.
@@ -25,11 +27,13 @@ const ItemDetail: NextPage = () => {
             and that ni**a Winston or anybody else is in there, you the first
             motherfucker to get shot. You understand?
           </p>
-          <div>
-            <button>Talk to seller</button>
-            <button>
+          <div className="flex justify-between mt-3">
+            <button className="flex-1 bg-orange-500 py-2 rounded-md text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-500 hover:bg-orange-600">
+              Talk to seller
+            </button>
+            <button className="p-2 ml-1 text-gray-500 hover:bg-gray-100 rounded-md">
               <svg
-                className="h-6 w-6 "
+                className="h-5 w-5 "
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -47,14 +51,14 @@ const ItemDetail: NextPage = () => {
           </div>
         </div>
       </div>
-      <div>
-        <h2>Similar items</h2>
-        <div>
+      <div className="p-5">
+        <h2 className="text-center font-semibold text-lg">Similar items</h2>
+        <div className="grid grid-cols-2 mt-2 gap-5">
           {[1, 2, 3, 4, 5, 6].map((_, i) => (
-            <div key={i}>
-              <div />
-              <h3>Galaxy S60</h3>
-              <p>$6</p>
+            <div key={i} className="select-none">
+              <div className="w-full aspect-square bg-gray-500 cursor-pointer" />
+              <h3 className="mt-1 text-sm cursor-pointer">Galaxy S60</h3>
+              <p className="text-xl font-bold">$6</p>
             </div>
           ))}
         </div>
