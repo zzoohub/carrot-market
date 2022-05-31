@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Community: NextPage = () => {
   return (
-    <div className="px-5 py-10">
+    <div className="px-4 py-10">
       {[1, 2, 3, 4, 5, 6, 7].map((index, i) => (
         <div key={index} className="mb-10">
           <span className="bg-gray-200 px-2 py-1 text-xs rounded-full">

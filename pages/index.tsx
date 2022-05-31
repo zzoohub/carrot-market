@@ -4,7 +4,7 @@ const Home: NextPage = () => {
   return (
     <div>
       {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-        <div key={i} className="flex justify-between px-5 py-5 select-none border-b">
+        <div key={i} className="flex justify-between px-4 py-10 select-none border-b">
           <div className="flex items-center">
             <div className="w-20 h-20 bg-gray-500 mr-2 cursor-pointer shadow-md" />
             <div className="flex flex-col">

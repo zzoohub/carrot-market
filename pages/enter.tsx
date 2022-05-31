@@ -13,7 +13,7 @@ export default function Enter() {
       <h3 className="text-orange-500 font-bold text-2xl text-center mt-5">
         Enter to Carrot
       </h3>
-      <div className="px-5">
+      <div className="px-4">
         <div>
           <h5 className="text-center mt-5 text-gray-500 font-light text-sm">
             Enter using:
