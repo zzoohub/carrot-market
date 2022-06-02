@@ -24,7 +24,7 @@ export default function Layout({
 
   return (
     <div>
-      <header className="flex justify-center items-center w-full h-[50px] fixed top-0 border-b bg-white text-lg font-semibold max-w-lg">
+      <header className="flex justify-center items-center w-full h-[50px] fixed top-0 border-b bg-white text-lg font-semibold max-w-lg z-10">
         {canGoBack ? (
           <div
             onClick={onClick}

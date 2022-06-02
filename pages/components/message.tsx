@@ -6,6 +6,7 @@ interface MessageProps{
   avartarUrl?: string;
   message: string;
 }
+
 export default function Message({reversed, avartarUrl, message}:MessageProps){
   return (
     <div className={cls("flex items-center space-x-2", reversed ? "flex-row-reverse space-x-reverse" : "")}>
