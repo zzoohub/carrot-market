@@ -1,54 +1,67 @@
 import type { NextPage } from "next";
+import Layout from "../components/layout";
 
-const CreateStream: NextPage = () => {
+const Create: NextPage = () => {
   return (
-    <div className="px-4 py-10 space-y-5">
-
-      <div className="relative text-sm">
-        <label htmlFor="productName">Name</label>
+    <Layout title="Create stream" canGoBack>
+      <div className=" space-y-5 py-10 px-4">
         <div>
-          <input
-            id="productName"
-            type="text"
-            placeholder="product name"
-            className="w-full mt-1 border rounded-md border-gray-300 focus:outline-none p-2 focus:border-orange-500"
-          />
-        </div>
-      </div>
-
-      <div className="relative text-sm">
-        <label htmlFor="input">Price</label>
-        <div>
-          <div className="absolute top-[33px] left-0 pl-2 text-gray-500 text-sm">
-            <span>$</span>
-          </div>
-          <input
-            id="input"
-            type="text"
-            placeholder="0.00"
-            className="w-full mt-1 pl-5 border rounded-md border-gray-300 focus:outline-none p-2 focus:border-orange-500"
-          />
-          <div className="absolute right-2 top-[34px] text-gray-500 text-xs">
-            <span>USD</span>
+          <label
+            className="mb-1 block text-sm font-medium text-gray-700"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <div className="rounded-md relative flex  items-center shadow-sm">
+            <input
+              id="name"
+              type="email"
+              className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+              required
+            />
           </div>
         </div>
-      </div>
-
-      <div>
-        <label className="text-sm">Description</label>
-        <div className="mt-1">
+        <div>
+          <label
+            className="mb-1 block text-sm font-medium text-gray-700"
+            htmlFor="price"
+          >
+            Price
+          </label>
+          <div className="rounded-md relative flex  items-center shadow-sm">
+            <div className="absolute left-0 pointer-events-none pl-3 flex items-center justify-center">
+              <span className="text-gray-500 text-sm">$</span>
+            </div>
+            <input
+              id="price"
+              className="appearance-none pl-7 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+              type="text"
+              placeholder="0.00"
+            />
+            <div className="absolute right-0 pointer-events-none pr-3 flex items-center">
+              <span className="text-gray-500">USD</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="description"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Description
+          </label>
           <textarea
+            id="description"
+            className="mt-1 shadow-sm w-full focus:ring-orange-500 rounded-md border-gray-300 focus:border-orange-500 "
             rows={4}
-            className="resize-none w-full focus:outline-none focus:border-orange-500 border rounded-md p-2 text-sm"
           />
         </div>
+        <button className=" w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
+          Go live
+        </button>
       </div>
-
-      <button className="w-full bg-orange-500 text-white font-medium text-md py-2 rounded-md shadow-md hover:bg-orange-600">
-        Go-Live
-      </button>
-    </div>
+    </Layout>
   );
 };
 
-export default CreateStream;
+export default Create;
