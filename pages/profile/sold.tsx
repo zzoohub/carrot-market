@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 
-const Home: NextPage = () => {
+const Sold: NextPage = () => {
   return (
     <div>
       {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
@@ -72,4 +72,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Sold;
