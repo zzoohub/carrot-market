@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import FloatingButton from "../components/floating-button";
 import Layout from "../components/layout";
 
 const Live: NextPage = () => {
@@ -13,7 +14,7 @@ const Live: NextPage = () => {
             </h1>
           </div>
         ))}
-        <button className="fixed bottom-16 right-5 bg-orange-500 p-2 rounded-full text-white shadow-lg hover:bg-orange-600 transition-color z-10">
+        <FloatingButton href={`/streams/:id`}>
           <svg
             className="w-6 h-6"
             fill="none"
@@ -28,7 +29,7 @@ const Live: NextPage = () => {
               d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
             ></path>
           </svg>
-        </button>
+        </FloatingButton>
       </div>
     </Layout>
   );

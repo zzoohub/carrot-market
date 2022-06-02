@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { cls } from "../libs/utils";
+import Button from "./components/button";
+import Input from "./components/input";
 
 export default function Enter() {
-  function calsses(...classNames: string[]) {
-    return classNames.join(" ");
-  }
 
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => setMethod("email");
@@ -21,58 +21,36 @@ export default function Enter() {
           <div className="flex justify-between">
             <button
               onClick={onEmailClick}
-              className={calsses(
-                "text-center w-full text-m border-b-2 transition focus:outline-none",
+              className={cls(
+                "text-center w-full text-m border-b-2 transition focus:outline-none font-bold",
                 method === "email"
-                  ? "border-b-orange-400 py-2 text-orange-500 font-medium"
-                  : "border-b-transparent"
+                  ? "border-b-orange-400 py-2 text-orange-500"
+                  : "border-b-transparent text-gray-600"
               )}
             >
               Email
             </button>
             <button
               onClick={onPhoneClick}
-              className={calsses(
-                "text-center w-full text-m border-b-2 transition focus:outline-none",
+              className={cls(
+                "text-center w-full text-m border-b-2 transition focus:outline-none font-semibold",
                 method === "phone"
-                  ? "border-b-orange-500 py-2 text-orange-500 font-medium"
-                  : "border-b-transparent"
+                  ? "border-b-orange-500 py-2 text-orange-500"
+                  : "border-b-transparent text-gray-600"
               )}
             >
               Phone
             </button>
           </div>
         </div>
-        <form className="mt-5">
-          <label className="text-xs">
-            {method === "email" ? "Email address" : null}
-            {method === "phone" ? "Phone number" : null}
-          </label>
-          <div>
-            {method === "email" ? (
-              <input
-                type="email"
-                required
-                className="w-full mt-1 border rounded-md border-gray-300 focus:outline-none p-2 focus:border-orange-500"
-              />
-            ) : null}
-            {method === "phone" ? (
-              <div className="flex mt-1">
-                <span className="border rounded-l-md border-r-0 p-2 border-gray-300 text-sm bg-gray-100 select-none">
-                  +82
-                </span>
-                <input
-                  className="p-2 border border-gray-300 rounded-l-none rounded-md w-full focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-                  type="number"
-                  required
-                />
-              </div>
-            ) : null}
-          </div>
-          <button className="w-full mt-5 bg-orange-500 text-white font-medium text-md py-2 rounded-md shadow-md">
-            {method === "email" ? "Get login link" : null}
-            {method === "phone" ? "Get one-time password" : null}
-          </button>
+        <form className="mt-5 flex flex-col space-y-4">
+          {method === "email" ?
+          <Input name="email" kind="text" label="Email address"></Input>
+          : null}
+          {method === "phone" ?
+          <Input name="phone" kind="phone" label="Phone number"></Input>
+          : null}
+          <Button text={method === "email" ? "Get login link" : "Get one-time password"}></Button>
         </form>
         <div>
           <div className="relative">

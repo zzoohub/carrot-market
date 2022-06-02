@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Layout from "../components/layout";
+import Message from "../components/message";
 
 const Stream: NextPage = () => {
   return (
@@ -23,90 +24,12 @@ const Stream: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4 mt-3">
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>Hi how much are you selling them for?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>I want ￦20,000</p>
-              </div>
-            </div>
+            <Message message="왼쪽이 말하고있습니다."></Message>
+            <Message message="오른쪽이 말하고있습니다." reversed></Message>
+            <Message message="왼쪽이 말하고있습니다."></Message>
+            <Message message="오른쪽이 말하고있습니다." reversed></Message>
+            <Message message="왼쪽이 말하고있습니다."></Message>
+            <Message message="오른쪽이 말하고있습니다." reversed></Message>
           </div>
           <div className="fixed w-full max-w-md mx-auto inset-x-0 bottom-3">
             <div className="relative">
