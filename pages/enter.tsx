@@ -1,13 +1,39 @@
 import { useState } from "react";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 import Button from "./components/button";
 import Input from "./components/input";
+import { FieldError, useForm } from "react-hook-form";
+import useMutation from "../libs/client/useMutation";
 
 export default function Enter() {
+  interface LoginForm {
+    email: string;
+    phone: number;
+  }
+
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<LoginForm>();
+
+  const [enter, { loading, data, error }] = useMutation(`/api/users/enter`);
 
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => setMethod("email");
-  const onPhoneClick = () => setMethod("phone");
+  const onEmailClick = () => {
+    reset();
+    setMethod("email");
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod("phone");
+  };
+
+  const onValid = (data: LoginForm) => {
+    enter(data);
+  };
+
   return (
     <div>
       <h3 className="text-orange-500 font-bold text-2xl text-center mt-5">
@@ -43,15 +69,53 @@ export default function Enter() {
             </button>
           </div>
         </div>
-        <form className="mt-5 flex flex-col space-y-4">
-          {method === "email" ?
-          <Input name="email" kind="text" label="Email address"></Input>
-          : null}
-          {method === "phone" ?
-          <Input name="phone" kind="phone" label="Phone number"></Input>
-          : null}
-          <Button text={method === "email" ? "Get login link" : "Get one-time password"}></Button>
+
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="mt-5 flex flex-col space-y-8 relative"
+        >
+          {method === "email" ? (
+            <Input
+              register={register("email", { required: "Write your email." })}
+              name="email"
+              kind="text"
+              label="Email address"
+              type="email"
+            ></Input>
+          ) : null}
+          {method === "phone" ? (
+            <Input
+              register={register("phone", {
+                required: "Write your phone number.",
+                minLength: {
+                  value: 8,
+                  message: "The minimum lenght is 8",
+                },
+                maxLength: {
+                  value: 11,
+                  message: "The maximun lenght is 11",
+                },
+              })}
+              name="phone"
+              kind="phone"
+              label="Phone number"
+              type="number"
+            ></Input>
+          ) : null}
+          <span
+            id="errorMessage"
+            className="absolute top-10 left-1/2 -translate-x-1/2 text-sm text-red-500 font-bold"
+          >
+            {errors.phone?.message}
+            {errors.email?.message}
+          </span>
+          <Button
+            text={
+              method === "email" ? "Get login link" : "Get one-time password"
+            }
+          ></Button>
         </form>
+
         <div>
           <div className="relative">
             <div className="border border-gray-100 mt-8" />

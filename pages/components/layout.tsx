@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { cls } from "../../libs/utils";
+import { cls } from "../../libs/client/utils";
 import { useRouter } from "next/router";
 
 interface LayoutProps {
@@ -48,7 +48,9 @@ export default function Layout({
         ) : null}
         {title}
       </header>
-      <main className={cls("mt-12 relative", hasTabBar ? "mb-16" : "")}>{children}</main>
+      <main className={cls("mt-12 relative", hasTabBar ? "mb-16" : "")}>
+        {children}
+      </main>
       {hasTabBar ? (
         <nav className="flex justify-evenly items-center w-full h-[50px] fixed bottom-0 border-t bg-white text-sm font-semibold max-w-lg">
           <Link href="/">
