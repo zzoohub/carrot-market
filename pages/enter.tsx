@@ -18,7 +18,7 @@ export default function Enter() {
     handleSubmit,
   } = useForm<LoginForm>();
 
-  const [enter, { loading, data, error }] = useMutation(`/api/users/enter`);
+  const [enter, { loading, userData, error }] = useMutation(`/api/users/enter`);
 
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
@@ -30,8 +30,8 @@ export default function Enter() {
     setMethod("phone");
   };
 
-  const onValid = (data: LoginForm) => {
-    enter(data);
+  const onValid = (LoginInput: LoginForm) => {
+    enter(LoginInput);
   };
 
   return (
@@ -76,7 +76,10 @@ export default function Enter() {
         >
           {method === "email" ? (
             <Input
-              register={register("email", { required: "Write your email." })}
+              register={register("email", {
+                required: "Write your email.",
+                maxLength: { value: 30, message: "its too long email address" },
+              })}
               name="email"
               kind="text"
               label="Email address"
