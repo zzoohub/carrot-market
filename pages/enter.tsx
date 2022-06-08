@@ -18,7 +18,7 @@ export default function Enter() {
     handleSubmit,
   } = useForm<LoginForm>();
 
-  const [enter, { loading, userData, error }] = useMutation(`/api/users/enter`);
+  const [enter, { loading, data, error }] = useMutation(`/api/users/enter`);
 
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
@@ -33,6 +33,7 @@ export default function Enter() {
   const onValid = (LoginInput: LoginForm) => {
     enter(LoginInput);
   };
+  console.log(loading, data, error);
 
   return (
     <div>

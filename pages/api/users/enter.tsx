@@ -5,6 +5,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.body.email);
-  res.status(202).end();
+  const newUser = await client.user.create({
+    data: {
+      email: req.body.email ? req.body.email : null,
+      phone: req.body.phone ? Number(req.body.phone) : null,
+    },
+  });
+  res.status(200).json(newUser);
 }
