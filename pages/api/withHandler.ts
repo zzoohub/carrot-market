@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "../../libs/server/client";
 
+export interface ResponseType {
+  ok: boolean;
+  [key: string]: any;
+}
+
 export default function withHandler(
   method: "GET" | "POST" | "DELETE",
   apiFn: (req: NextApiRequest, res: NextApiResponse) => void
