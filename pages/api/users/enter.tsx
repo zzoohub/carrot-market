@@ -1,15 +1,47 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "../../../libs/server/client";
+import withHandler from "../withHandler";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const newUser = await client.user.create({
-    data: {
-      email: req.body.email ? req.body.email : null,
-      phone: req.body.phone ? Number(req.body.phone) : null,
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { email, phone } = req.body;
+
+  const payload = phone ? { phone: +phone } : { email };
+
+  const user = await client.user.upsert({
+    where: {
+      ...payload,
     },
+    create: {
+      ...payload,
+    },
+    update: {},
   });
-  res.status(200).json(newUser);
+  // if (email) {
+  //   user = await client.user.findUnique({
+  //     where: { email },
+  //   });
+  //   if (!user) {
+  //     user = await client.user.create({
+  //       data: {
+  //         email,
+  //       },
+  //     });
+  //   }
+  // }
+  // if (phone) {
+  //   user = await client.user.findUnique({
+  //     where: { phone: +phone },
+  //   });
+  //   if (!user) {
+  //     user = await client.user.create({
+  //       data: {
+  //         phone: +phone,
+  //       },
+  //     });
+  //   }
+  // }
+  console.log(user);
+  res.json(user);
 }
+
+export default withHandler("POST", handler);

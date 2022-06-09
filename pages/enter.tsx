@@ -32,6 +32,7 @@ export default function Enter() {
 
   const onValid = (LoginInput: LoginForm) => {
     enter(LoginInput);
+    console.log(LoginInput);
   };
   console.log(loading, data, error);
 
