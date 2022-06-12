@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cls } from "../libs/client/utils";
 import Button from "./components/button";
 import Input from "./components/input";
 import { FieldError, useForm } from "react-hook-form";
 import useMutation from "../libs/client/useMutation";
+import { useRouter } from "next/router";
 
 export default function Enter() {
   interface LoginForm {
     email: string;
     phone: number;
+  }
+  interface TokenForm {
+    token: number;
+  }
+
+  interface EnterMutationResult {
+    ok: boolean;
   }
 
   const {
@@ -17,10 +25,16 @@ export default function Enter() {
     formState: { errors },
     handleSubmit,
   } = useForm<LoginForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
 
-  const [enter, { loading, data, error }] = useMutation(`/api/users/enter`);
+  const [enter, { loading, data, error }] =
+    useMutation<EnterMutationResult>(`/api/users/enter`);
+  const [tokenConfirm, { loading: tokenLoading, data: tokenData }] =
+    useMutation(`/api/users/confirm`);
 
   const [method, setMethod] = useState<"email" | "phone">("email");
+
   const onEmailClick = () => {
     reset();
     setMethod("email");
@@ -32,94 +46,136 @@ export default function Enter() {
 
   const onValid = (LoginInput: LoginForm) => {
     enter(LoginInput);
-    console.log(LoginInput);
   };
-  console.log(loading, data, error);
-
+  const onTokenValid = (TokenInput: TokenForm) => {
+    tokenConfirm(TokenInput);
+  };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
   return (
     <div>
       <h3 className="text-orange-500 font-bold text-2xl text-center mt-5">
         Enter to Carrot
       </h3>
       <div className="px-4">
-        <div>
-          <h5 className="text-center mt-5 text-gray-500 font-light text-sm">
-            Enter using:
-          </h5>
-          <div className="flex justify-between">
-            <button
-              onClick={onEmailClick}
-              className={cls(
-                "text-center w-full text-m border-b-2 transition focus:outline-none font-bold",
-                method === "email"
-                  ? "border-b-orange-400 py-2 text-orange-500"
-                  : "border-b-transparent text-gray-600"
-              )}
-            >
-              Email
-            </button>
-            <button
-              onClick={onPhoneClick}
-              className={cls(
-                "text-center w-full text-m border-b-2 transition focus:outline-none font-semibold",
-                method === "phone"
-                  ? "border-b-orange-500 py-2 text-orange-500"
-                  : "border-b-transparent text-gray-600"
-              )}
-            >
-              Phone
-            </button>
-          </div>
-        </div>
-
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="mt-5 flex flex-col space-y-8 relative"
-        >
-          {method === "email" ? (
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-5 flex flex-col space-y-8 relative"
+          >
             <Input
-              register={register("email", {
-                required: "Write your email.",
-                maxLength: { value: 30, message: "its too long email address" },
-              })}
-              name="email"
-              kind="text"
-              label="Email address"
-              type="email"
-            ></Input>
-          ) : null}
-          {method === "phone" ? (
-            <Input
-              register={register("phone", {
-                required: "Write your phone number.",
-                minLength: {
-                  value: 8,
-                  message: "The minimum lenght is 8",
-                },
+              register={tokenRegister("token", {
+                required: "Confirm your token.",
                 maxLength: {
-                  value: 11,
-                  message: "The maximun lenght is 11",
+                  value: 10,
+                  message: "its too long",
                 },
               })}
-              name="phone"
-              kind="phone"
-              label="Phone number"
+              name="token"
+              kind="text"
+              label="Token confirm"
               type="number"
             ></Input>
-          ) : null}
-          <span
-            id="errorMessage"
-            className="absolute top-10 left-1/2 -translate-x-1/2 text-sm text-red-500 font-bold"
-          >
-            {errors.phone?.message}
-            {errors.email?.message}
-          </span>
-          <Button
-            text={
-              method === "email" ? "Get login link" : "Get one-time password"
-            }
-          ></Button>
-        </form>
+
+            <span
+              id="errorMessage"
+              className="absolute top-10 left-1/2 -translate-x-1/2 text-sm text-red-500 font-bold"
+            >
+              {errors.phone?.message}
+            </span>
+            <Button text={tokenLoading ? "Loading" : "Confirm"}></Button>
+          </form>
+        ) : (
+          <>
+            <div>
+              <h5 className="text-center mt-5 text-gray-500 font-light text-sm">
+                Enter using:
+              </h5>
+
+              <div className="flex justify-between">
+                <button
+                  onClick={onEmailClick}
+                  className={cls(
+                    "text-center w-full text-m border-b-2 transition focus:outline-none font-bold",
+                    method === "email"
+                      ? "border-b-orange-400 py-2 text-orange-500"
+                      : "border-b-transparent text-gray-600"
+                  )}
+                >
+                  Email
+                </button>
+                <button
+                  onClick={onPhoneClick}
+                  className={cls(
+                    "text-center w-full text-m border-b-2 transition focus:outline-none font-semibold",
+                    method === "phone"
+                      ? "border-b-orange-500 py-2 text-orange-500"
+                      : "border-b-transparent text-gray-600"
+                  )}
+                >
+                  Phone
+                </button>
+              </div>
+            </div>
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="mt-5 flex flex-col space-y-8 relative"
+            >
+              {method === "email" ? (
+                <Input
+                  register={register("email", {
+                    required: "Write your email.",
+                    maxLength: {
+                      value: 30,
+                      message: "its too long email address",
+                    },
+                  })}
+                  name="email"
+                  kind="text"
+                  label="Email address"
+                  type="email"
+                ></Input>
+              ) : null}
+              {method === "phone" ? (
+                <Input
+                  register={register("phone", {
+                    required: "Write your phone number.",
+                    minLength: {
+                      value: 8,
+                      message: "The minimum lenght is 8",
+                    },
+                    maxLength: {
+                      value: 11,
+                      message: "The maximun lenght is 11",
+                    },
+                  })}
+                  name="phone"
+                  kind="phone"
+                  label="Phone number"
+                  type="number"
+                ></Input>
+              ) : null}
+              <span
+                id="errorMessage"
+                className="absolute top-10 left-1/2 -translate-x-1/2 text-sm text-red-500 font-bold"
+              >
+                {errors.phone?.message}
+                {errors.email?.message}
+              </span>
+              <Button
+                text={
+                  method === "email"
+                    ? "Get login link"
+                    : "Get one-time password"
+                }
+              ></Button>
+            </form>
+          </>
+        )}
 
         <div>
           <div className="relative">
