@@ -3,9 +3,6 @@ import twilio from "twilio";
 import client from "../../../libs/server/client";
 import withHandler, { ResponseType } from "../withHandler";
 
-import nodemailer from "nodemailer";
-import mgTransport from "nodemailer-mailgun-transport";
-
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
