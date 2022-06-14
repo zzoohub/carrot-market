@@ -3,7 +3,7 @@ import Link from "next/link";
 interface ItemProps {
   title: string;
   id: number;
-  etc: string;
+  desc: string;
   price: number;
   comments: number;
   hearts: number;
@@ -11,22 +11,24 @@ interface ItemProps {
 export default function Item({
   title,
   id,
-  etc,
+  desc,
   price,
   comments,
   hearts,
 }: ItemProps) {
   return (
-    <Link href={`/product/${id}`}>
+    <Link href={`/products/${id}`}>
       <a className="flex justify-between px-4 py-10 select-none">
         <div className="flex items-center">
           <div className="w-20 h-20 bg-gray-500 mr-2 cursor-pointer shadow-md" />
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-around h-full">
             <h3 className="font-semibold text-gray-600 text-[16px]  cursor-pointer">
               {title}
             </h3>
-            <span className="font-medium text-[12px] text-gray-500">{etc}</span>
-            <span className="font-bold text-lg text-orange-500 cursor-pointer">
+            <span className="font-medium text-[12px] text-gray-500">
+              {desc}
+            </span>
+            <span className="font-bold text-lg text-orange-500 cursor-pointer truncate w-full">
               {`${price}$`}
             </span>
           </div>

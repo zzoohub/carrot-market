@@ -9,7 +9,10 @@ const ChatDetail: NextPage = () => {
         <Message message="Hi how much are you selling them for?"></Message>
         <Message message="I want ￦20,000" reversed></Message>
         <Message message="미쳤어"></Message>
-        <div id="searchBar" className="fixed w-full max-w-md mx-auto inset-x-0 bottom-3">
+        <div
+          id="searchBar"
+          className="fixed w-full max-w-md mx-auto inset-x-0 bottom-3"
+        >
           <div className="relative">
             <input
               type="text"

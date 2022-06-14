@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../libs/server/client";
+import client from "./client";
 
 interface ConfigType {
-  method: "POST" | "GET" | "DELETE";
+  methods: Method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   isPrivate?: boolean;
 }
+
+type Method = "POST" | "GET" | "DELETE";
 
 export interface ResponseType {
   ok: boolean;
@@ -13,12 +15,12 @@ export interface ResponseType {
 }
 
 export default function withHandler({
-  method,
+  methods,
   handler,
   isPrivate = true,
 }: ConfigType) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== method) {
+    if (req.method && !methods.includes(req.method as any)) {
       return res.status(400).end();
     }
     if (isPrivate && !req.session.user) {

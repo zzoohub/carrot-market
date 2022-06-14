@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import mail from "@sendgrid/mail";
 import twilio from "twilio";
 import client from "../../../libs/server/client";
-import withHandler, { ResponseType } from "../withHandler";
+import withHandler, { ResponseType } from "../../../libs/server/withHandler";
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 mail.setApiKey(process.env.SENDGRID_API_KEY!);
@@ -55,4 +55,4 @@ async function handler(
   return res.json({ ok: true });
 }
 
-export default withHandler({ method: "POST", handler, isPrivate: false });
+export default withHandler({ methods: ["POST"], handler, isPrivate: false });

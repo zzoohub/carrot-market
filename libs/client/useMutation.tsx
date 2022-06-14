@@ -20,14 +20,14 @@ export default function useMutation<T = any>(
     error: undefined,
   });
 
-  function mutate(loginData: any) {
+  function mutate(formData: any) {
     setState((prev) => ({ ...prev, loading: true }));
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(loginData),
+      body: JSON.stringify(formData),
     })
       .then((response) => response.json().catch(() => console.log("error")))
       .then((json) => setState((prev) => ({ ...prev, data: json })))

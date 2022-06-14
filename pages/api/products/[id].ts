@@ -7,15 +7,23 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const profile = await client.user.findUnique({
+  const product = await client.product.findUnique({
     where: {
-      id: req.session.user?.id,
+      id: +req.query.id,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          avatar: true,
+          name: true,
+        },
+      },
     },
   });
-
-  return res.json({
+  res.json({
     ok: true,
-    profile,
+    product,
   });
 }
 
