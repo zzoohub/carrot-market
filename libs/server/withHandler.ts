@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../libs/server/client";
+import client from "./client";
 
 export interface ResponseType {
   ok: boolean;
