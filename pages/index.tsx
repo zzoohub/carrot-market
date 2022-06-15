@@ -14,7 +14,6 @@ interface ProductsResponse {
 const Home: NextPage = () => {
   const user = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products");
-  console.log(data?.products);
 
   return (
     <Layout title="Home" hasTabBar>

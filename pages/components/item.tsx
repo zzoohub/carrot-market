@@ -25,10 +25,10 @@ export default function Item({
             <h3 className="font-semibold text-gray-600 text-[16px]  cursor-pointer">
               {title}
             </h3>
-            <span className="font-medium text-[12px] text-gray-500">
+            <span className="font-medium text-[12px] text-gray-500 truncate w-[300px]">
               {desc}
             </span>
-            <span className="font-bold text-lg text-orange-500 cursor-pointer truncate w-full">
+            <span className="font-bold text-lg text-orange-500 cursor-pointer">
               {`${price}$`}
             </span>
           </div>
