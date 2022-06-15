@@ -1,8 +1,21 @@
 import type { NextPage } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 import Button from "../components/button";
 import Layout from "../components/layout";
 
+interface ProductResponse {
+  ok: boolean;
+}
+
 const ItemDetail: NextPage = () => {
+  const router = useRouter();
+  console.log(router.query.id);
+  const { data, error } = useSWR(
+    router.query.id ? `/api/products/${router.query.id}` : null
+  );
+
   return (
     <Layout title="Item" canGoBack>
       <div>
@@ -11,24 +24,23 @@ const ItemDetail: NextPage = () => {
           <div className="flex items-center mt-4">
             <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
             <div>
-              <p className="font-bold text-sm">Steve Jebs</p>
-              <p className="text-gray-600 text-xs mt-1">View profile &rarr;</p>
+              <p className="font-bold text-sm">{data?.product?.user.name}</p>
+              <Link href={`/users/profile/${data?.product?.user.id}`}>
+                <a className="text-gray-600 text-xs mt-1">
+                  View profile &rarr;
+                </a>
+              </Link>
             </div>
           </div>
           <div className="mt-3">
             <h1 className="text-sm text-gray-600 font-medium select-none">
-              Galaxy S50
+              {data?.product?.name}
             </h1>
-            <p className="text-[22px] font-bold select-none">$140</p>
+            <p className="text-[22px] font-bold select-none">
+              ${data?.product?.price}
+            </p>
             <p className="mt-2 text-[12px] text-justify">
-              My money&apos;s in that office, right? If she start giving me some
-              bullshit about it ain&apos;t there, and we got to go someplace
-              else and get it, I&apos;m gonna shoot you in the head then and
-              there. Then I&apos;m gonna shoot that bitch in the kneecaps, find
-              out where my goddamn money is. She gonna tell me too. Hey, look at
-              me when I&apos;m talking to you, motherfucker. You listen: we go
-              in there, and that ni**a Winston or anybody else is in there, you
-              the first motherfucker to get shot. You understand?
+              {data?.product?.description}
             </p>
             <div className="flex items-center justify-between mt-3">
               <Button text="Talk to seller"></Button>
