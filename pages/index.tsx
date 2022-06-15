@@ -5,6 +5,7 @@ import useUser from "../libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
+import FloatingButton from "./components/floating-button";
 
 interface ProductsResponse {
   ok: boolean;
@@ -13,6 +14,7 @@ interface ProductsResponse {
 const Home: NextPage = () => {
   const user = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products");
+  console.log(data?.products);
 
   return (
     <Layout title="Home" hasTabBar>
@@ -20,7 +22,7 @@ const Home: NextPage = () => {
         <title>Home</title>
       </Head>
       <div className="divide-y-[1px]">
-        {data?.products.map((product) => (
+        {data?.products?.map((product) => (
           <Item
             key={product.id}
             id={product.id}
@@ -32,6 +34,20 @@ const Home: NextPage = () => {
           ></Item>
         ))}
       </div>
+      <FloatingButton href="/products/upload">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </FloatingButton>
     </Layout>
   );
 };
