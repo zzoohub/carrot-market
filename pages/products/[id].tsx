@@ -76,9 +76,9 @@ const ItemDetail: NextPage = () => {
                     fill="currentColor"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                 ) : (
@@ -105,9 +105,9 @@ const ItemDetail: NextPage = () => {
         <div className="p-5">
           <h2 className="text-center font-semibold text-lg">Similar items</h2>
           <div className="grid grid-cols-2 mt-2 gap-5">
-            {data?.relatedProduct.map((product) => (
-              <Link href={`/products/${product.id}`}>
-                <div key={product.id} className="select-none">
+            {data?.relatedProduct?.map((product) => (
+              <Link key={product.id} href={`/products/${product.id}`}>
+                <div className="select-none">
                   <div className="w-full aspect-square bg-gray-500 cursor-pointer" />
                   <h3 className="mt-1 text-sm cursor-pointer">
                     {product.name}
