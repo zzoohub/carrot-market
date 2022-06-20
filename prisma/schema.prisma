@@ -20,7 +20,7 @@ model User{
   avatar String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tokens Token[]
+  Tokens Token[]
   Products Product[]
   Favorites Favorite[]
 }
