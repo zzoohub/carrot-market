@@ -23,6 +23,9 @@ model User{
   Tokens Token[]
   Products Product[]
   Favorites Favorite[]
+  Posts Post[]
+  Answers Answer[]
+  Wonderings Wondering[]
 }
 
 model Token{
@@ -51,6 +54,35 @@ model Favorite{
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId Int
   productId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Post{
+  id Int @id @default(autoincrement())
+  question String @db.MediumText
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Answers Answer[]
+  Wonderings Wondering[]
+}
+model Answer{
+  id Int @id @default(autoincrement())
+  answer String @db.MediumText
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Wondering{
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
