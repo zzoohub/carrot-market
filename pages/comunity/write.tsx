@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import useCoords from "../../libs/client/useCoords";
 import useMutation from "../../libs/client/useMutation";
 import Button from "../components/button";
 import Layout from "../components/layout";
@@ -20,6 +21,8 @@ const Write: NextPage = () => {
     question: string;
   }
   const router = useRouter();
+  const { latitude, longitude } = useCoords();
+
   const {
     register,
     handleSubmit,
@@ -30,7 +33,7 @@ const Write: NextPage = () => {
 
   const postUpload = (data: QuestionForm) => {
     if (loading) return;
-    createPost(data);
+    createPost({ ...data, latitude, longitude });
   };
   useEffect(() => {
     if (data && data.ok) {

@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import useCoords from "../../libs/client/useCoords";
 import FloatingButton from "../components/floating-button";
 import Layout from "../components/layout";
 
@@ -19,15 +20,20 @@ interface PostsResponse {
 }
 
 const Community: NextPage = () => {
-  const { data, error } = useSWR<PostsResponse>(`/api/posts`);
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResponse>(
+    latitude && longitude
+      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+      : null
+  );
   const router = useRouter();
 
   return (
     <Layout title="Comunity" hasTabBar>
       <div className="px-4 py-10 relativ max-w-lg">
         {data?.posts?.map((post) => (
-          <Link href={`/comunity/${post?.id}`} key={post?.id} className="mb-10">
-            <a>
+          <Link href={`/comunity/${post?.id}`} key={post?.id}>
+            <a className="mb-5 block">
               <span className="bg-gray-200 px-2 py-1 text-xs rounded-full">
                 동네질문
               </span>
@@ -39,7 +45,7 @@ const Community: NextPage = () => {
                 <span>{post?.user?.name}</span>
                 <span>{String(post?.createdAt)}</span>
               </div>
-              <div className="flex py-2 border-b">
+              <div className="flex py-2 border-b-2">
                 <span className="flex items-center text-xs mr-5">
                   <svg
                     className="w-4 h-4"
