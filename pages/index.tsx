@@ -7,12 +7,16 @@ import useSWR from "swr";
 import { Product } from "@prisma/client";
 import FloatingButton from "./components/floating-button";
 
+interface ProductWithCount extends Product {
+  _count: {
+    Favorites: number;
+  };
+}
 interface ProductsResponse {
   ok: boolean;
-  products: Product[];
+  products: ProductWithCount[];
 }
 const Home: NextPage = () => {
-  const user = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products");
 
   return (
@@ -28,8 +32,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             desc={product.description}
-            comments={5}
-            hearts={5}
+            hearts={product._count.Favorites}
           ></Item>
         ))}
       </div>

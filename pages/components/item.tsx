@@ -5,17 +5,9 @@ interface ItemProps {
   id: number;
   desc: string;
   price: number;
-  comments: number;
   hearts: number;
 }
-export default function Item({
-  title,
-  id,
-  desc,
-  price,
-  comments,
-  hearts,
-}: ItemProps) {
+export default function Item({ title, id, desc, price, hearts }: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
       <a className="flex justify-between px-4 py-10 select-none">
@@ -51,7 +43,7 @@ export default function Item({
             </svg>
             <span>{hearts}</span>
           </div>
-          <div className="flex items-center text-sm">
+          {/* <div className="flex items-center text-sm">
             <svg
               className="w-4 h-4  mr-1"
               fill="none"
@@ -67,7 +59,7 @@ export default function Item({
               ></path>
             </svg>
             <span>{comments}</span>
-          </div>
+          </div> */}
         </div>
       </a>
     </Link>

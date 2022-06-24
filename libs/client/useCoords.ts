@@ -7,8 +7,8 @@ export default function useCoords() {
   }
 
   const [coords, setCoords] = useState<CoordsType>({
-    latitude: null,
-    longitude: null,
+    latitude: 0,
+    longitude: 0,
   });
   const onSuccess = ({
     coords: { latitude, longitude },
