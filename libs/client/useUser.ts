@@ -4,7 +4,11 @@ import { useEffect } from "react";
 import useSWR from "swr";
 
 export default function () {
-  const { data, error } = useSWR("/api/users/me");
+  interface UserResponse {
+    ok: boolean;
+    profile: User;
+  }
+  const { data, error } = useSWR<UserResponse>("/api/users/me");
   const router = useRouter();
 
   useEffect(() => {

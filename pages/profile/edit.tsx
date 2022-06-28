@@ -1,12 +1,57 @@
+import { spawn } from "child_process";
 import type { NextPage } from "next";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import useMutation from "../../libs/client/useMutation";
+import useUser from "../../libs/client/useUser";
 import Button from "../components/button";
 import Input from "../components/input";
 import Layout from "../components/layout";
 
 const EditProfile: NextPage = () => {
+  interface EditFormType {
+    email?: string;
+    phone?: string;
+    name?: string;
+    formErrors?: string;
+  }
+  interface EditProfileResponse {
+    ok: boolean;
+    error?: string;
+  }
+  const { user } = useUser();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<EditFormType>();
+  useEffect(() => {
+    if (user?.name) setValue("name", user.name);
+    if (user?.email) setValue("email", user.email);
+    if (user?.phone) setValue("phone", user.phone);
+  }, [user, setValue]);
+
+  const [setProfile, { loading, data }] =
+    useMutation<EditProfileResponse>(`/api/users/me`);
+  const onValid = ({ name, email, phone }: EditFormType) => {
+    if (loading) return;
+    if (email === "" && phone === "") {
+      return setError("formErrors", {
+        message: "Email or Phone are requierd..",
+      });
+    }
+    setProfile({ name, email, phone });
+  };
+  useEffect(() => {
+    if (data && !data.ok && data.error)
+      setError("formErrors", { message: data.error });
+  }, [data, setError]);
+
   return (
     <Layout title="Edit profile" canGoBack>
-      <div className="py-10 px-4 space-y-5">
+      <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">
           <div className="w-14 h-14 rounded-full bg-slate-500" />
           <label
@@ -22,10 +67,34 @@ const EditProfile: NextPage = () => {
             />
           </label>
         </div>
-        <Input name="email" label="Email address" kind="text"></Input>
-        <Input name="phone" label="Phone number" kind="phone"></Input>
-       <Button text="Update profile"></Button>
-      </div>
+        <Input
+          register={register("name")}
+          name="name"
+          type="text"
+          label="Name"
+          kind="text"
+        ></Input>
+        <Input
+          register={register("email")}
+          name="email"
+          type="text"
+          label="Email address"
+          kind="text"
+        ></Input>
+        <Input
+          register={register("phone")}
+          type="number"
+          name="phone"
+          label="Phone number"
+          kind="phone"
+        ></Input>
+        {errors.formErrors ? (
+          <em className="text-red-600 font-bold mt-3 block">
+            {errors.formErrors.message}
+          </em>
+        ) : null}
+        <Button text="Update profile"></Button>
+      </form>
     </Layout>
   );
 };
