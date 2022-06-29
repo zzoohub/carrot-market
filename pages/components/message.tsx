@@ -6,7 +6,7 @@ interface MessageProps {
   message: string;
 }
 
-export default function Message({ reversed, message }: MessageProps) {
+export default function UserMessage({ reversed, message }: MessageProps) {
   return (
     <div
       className={cls(
