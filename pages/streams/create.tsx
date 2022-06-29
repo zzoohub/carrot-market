@@ -1,19 +1,65 @@
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Stream } from "@prisma/client";
+import useMutation from "../../libs/client/useMutation";
 import Button from "../components/button";
 import Input from "../components/input";
 import Layout from "../components/layout";
 import Textarea from "../components/Textarea";
 
+interface StreamForm {
+  name: string;
+  price: number;
+  description: string;
+}
+interface CreateStreamResponse {
+  ok: boolean;
+  stream: Stream;
+}
 
 const Create: NextPage = () => {
+  const { register, handleSubmit } = useForm<StreamForm>();
+  const [createStream, { loading, data }] =
+    useMutation<CreateStreamResponse>(`/api/streams`);
+  const router = useRouter();
+  const onVaild = (form: StreamForm) => {
+    if (loading) return;
+    createStream(form);
+  };
+  useEffect(() => {
+    if (data && data.ok) {
+      router.push(`/streams/${data.stream.id}`);
+    }
+  }, [data]);
+
   return (
     <Layout title="Create stream" canGoBack>
-      <div className=" space-y-5 py-10 px-4">
-        <Input name="name" label="Name" kind="text" required></Input>
-        <Input name="phone" label="Phone number" kind="phone" required></Input>
-        <Textarea name="textarea" label="Description" rows={4}></Textarea>
+      <form onSubmit={handleSubmit(onVaild)} className=" space-y-5 py-10 px-4">
+        <Input
+          register={register("name", { required: true })}
+          type="text"
+          name="name"
+          label="Name"
+          kind="text"
+        ></Input>
+        <Input
+          register={register("price", { required: true, valueAsNumber: true })}
+          type="number"
+          name="price"
+          label="Price"
+          kind="price"
+          required
+        ></Input>
+        <Textarea
+          register={register("description", { required: true })}
+          name="textarea"
+          label="Description"
+          rows={4}
+        ></Textarea>
         <Button text="Go live"></Button>
-      </div>
+      </form>
     </Layout>
   );
 };
