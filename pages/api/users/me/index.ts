@@ -53,9 +53,9 @@ async function handler(
           email,
         },
       });
-      res.json({
-        ok: true,
-      });
+      // res.json({
+      //   ok: true,
+      // });
     } // email check
     if (phone && phone !== currentUser?.phone) {
       const alreadyExists = Boolean(
@@ -79,9 +79,9 @@ async function handler(
           phone,
         },
       });
-      res.json({
-        ok: true,
-      });
+      `  // res.json({
+      //   ok: true,
+      // });`;
     } // phone check
     if (name) {
       await client.user.update({
@@ -89,7 +89,7 @@ async function handler(
         data: { name },
       });
     }
-    res.json({ ok: true });
+    return res.json({ ok: true });
   } // Post request
 }
 
