@@ -1,6 +1,5 @@
-import { spawn } from "child_process";
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useMutation from "../../libs/client/useMutation";
 import useUser from "../../libs/client/useUser";
@@ -13,6 +12,7 @@ const EditProfile: NextPage = () => {
     email?: string;
     phone?: string;
     name?: string;
+    avatar?: FileList;
     formErrors?: string;
   }
   interface EditProfileResponse {
@@ -26,6 +26,7 @@ const EditProfile: NextPage = () => {
     setValue,
     setError,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm<EditFormType>();
   useEffect(() => {
@@ -36,7 +37,9 @@ const EditProfile: NextPage = () => {
 
   const [setProfile, { loading, data }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = ({ name, email, phone }: EditFormType) => {
+  const onValid = ({ name, email, phone, avatar }: EditFormType) => {
+    console.log(avatar);
+    return;
     if (loading) return;
     if (email === "" && phone === "") {
       return setError("formErrors", {
@@ -50,17 +53,35 @@ const EditProfile: NextPage = () => {
       setError("formErrors", { message: data.error });
   }, [data, setError]);
 
+  const watchingAvatar = watch("avatar");
+  const [avatarPreview, setAvatarPreview] = useState("");
+  useEffect(() => {
+    if (watchingAvatar && watchingAvatar.length > 0) {
+      const file = watchingAvatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [watchingAvatar]);
+
   return (
     <Layout title="Edit profile" canGoBack>
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">
-          <div className="w-14 h-14 rounded-full bg-slate-500" />
+          {avatarPreview ? (
+            <img
+              src={avatarPreview}
+              className="w-14 h-14 rounded-full bg-slate-500"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-full bg-slate-500" />
+          )}
+
           <label
             htmlFor="picture"
             className="cursor-pointer py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 text-gray-700"
           >
             Change
             <input
+              {...register("avatar")}
               id="picture"
               type="file"
               className="hidden"

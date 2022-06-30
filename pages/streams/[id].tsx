@@ -36,11 +36,15 @@ const DetailStream: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
   const { data, mutate } = useSWR<GetStreamResponse>(
-    router.query.id ? `/api/streams/${router?.query?.id}` : null
+    router.query.id ? `/api/streams/${router?.query?.id}` : null,
+    {
+      refreshInterval: 1000,
+    }
   );
   if (data?.ok === false) {
     router.push("/streams");
   }
+  console.log(data);
 
   const { register, handleSubmit, reset } = useForm<MessageType>();
   const [createMessage, { loading, data: messageData }] =
@@ -49,14 +53,35 @@ const DetailStream: NextPage = () => {
     );
   const onValid = (chat: MessageType) => {
     if (loading) return;
-    createMessage(chat);
     reset();
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              {
+                id: Date.now(),
+                message: chat.message,
+                user: {
+                  ...user,
+                },
+              },
+            ],
+          },
+        } as any),
+      false
+    );
+    createMessage(chat);
   };
-  useEffect(() => {
-    if (messageData && messageData.ok) {
-      mutate();
-    }
-  }, [messageData]);
+  // useEffect(() => {
+  //   if (messageData && messageData.ok) {
+  //     mutate();
+  //   }
+  // }, [messageData]);
 
   return (
     <Layout title="Stream" canGoBack>

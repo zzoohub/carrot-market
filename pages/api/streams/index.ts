@@ -8,7 +8,13 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    const streams = await client.stream.findMany({});
+    const {
+      query: { page },
+    } = req;
+    const streams = await client.stream.findMany({
+      take: 10,
+      skip: +page * 10,
+    });
     res.json({
       ok: true,
       streams,

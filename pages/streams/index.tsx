@@ -1,7 +1,9 @@
 import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { ReactElement, ReactNode, useState } from "react";
 import useSWR from "swr";
+import { cls } from "../../libs/client/utils";
 import FloatingButton from "../components/floating-button";
 import Layout from "../components/layout";
 
@@ -11,7 +13,11 @@ interface GetStreamsResponse {
 }
 
 const Live: NextPage = () => {
-  const { data } = useSWR<GetStreamsResponse>(`/api/streams`);
+  const [pageNum, setPageNum] = useState(0);
+  const { data } = useSWR<GetStreamsResponse>(`/api/streams?page=${pageNum}`);
+  const movePage = (pageBtn: any) => {
+    setPageNum(+pageBtn?.target.innerText - 1);
+  };
   return (
     <Layout title="Streams" hasTabBar>
       <div className="py-6 divide-y-[1px] space-y-4">
@@ -27,6 +33,22 @@ const Live: NextPage = () => {
             </Link>
           </div>
         ))}
+
+        <div className="flex w-[300px] m-auto left-0 right-0 justify-center border-transparent">
+          {[...Array.from(Array(data?.streams.length).keys())].map((index) => (
+            <div
+              onClick={movePage}
+              className={cls(
+                "cursor-pointer font-bold text-lg w-8 h-8 flex justify-center items-center rounded-md",
+                pageNum === index ? "bg-orange-400" : ""
+              )}
+              key={index}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
+
         <FloatingButton href={`/streams/:id`}>
           <svg
             className="w-6 h-6"
