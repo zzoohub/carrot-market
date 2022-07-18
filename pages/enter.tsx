@@ -121,6 +121,7 @@ export default function Enter() {
                 </button>
               </div>
             </div>
+
             <form
               onSubmit={handleSubmit(onValid)}
               className="mt-5 flex flex-col space-y-8 relative"
