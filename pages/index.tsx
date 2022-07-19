@@ -28,6 +28,7 @@ const Home: NextPage = () => {
       <div className="divide-y-[1px]">
         {data?.products?.map((product) => (
           <Item
+            image={product.image!}
             key={product.id}
             id={product.id}
             title={product.name}

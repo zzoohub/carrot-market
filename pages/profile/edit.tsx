@@ -54,7 +54,7 @@ const EditProfile: NextPage = () => {
       setCustomLoading(true);
       const { uploadURL } = await (await fetch("/api/files")).json();
       const form = new FormData();
-      form.append("file", avatar[0]);
+      form.append("file", avatar[0], user?.id + "");
       const {
         result: { id },
       } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
@@ -92,7 +92,7 @@ const EditProfile: NextPage = () => {
           {avatarPreview ? (
             <img
               src={avatarPreview}
-              className="w-14 h-14 rounded-full bg-slate-500"
+              className="w-14 h-14 rounded-full bg-slate-500 overflow-hidden"
             />
           ) : (
             <div className="w-14 h-14 rounded-full bg-slate-500" />

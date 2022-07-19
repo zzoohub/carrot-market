@@ -35,9 +35,20 @@ const ItemDetail: NextPage = () => {
     <Layout title="Item" canGoBack>
       <div>
         <div className="px-4 py-10">
-          <div className="w-full h-96 bg-gray-500" />
+          <img
+            src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${data?.product?.image}/public`}
+            className="w-full h-96 bg-gray-500 object-cover"
+          />
           <div className="flex items-center mt-4">
-            <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
+            {data?.product?.user?.avatar ? (
+              <img
+                src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${data?.product?.user?.avatar}/avatar`}
+                className="h-10 w-10 bg-gray-600 rounded-full mr-2 object-cover"
+              />
+            ) : (
+              <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
+            )}
+
             <div>
               <p className="font-bold text-sm">{data?.product?.user?.name}</p>
               <Link href={`/users/profile/${data?.product?.user?.id}`}>
@@ -108,7 +119,10 @@ const ItemDetail: NextPage = () => {
             {data?.relatedProduct?.map((product) => (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <div className="select-none">
-                  <div className="w-full aspect-square bg-gray-500 cursor-pointer" />
+                  <img
+                    src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${product.image}/public`}
+                    className="w-full aspect-square cursor-pointer rounded-sm object-cover"
+                  />
                   <h3 className="mt-1 text-sm cursor-pointer">
                     {product.name}
                   </h3>

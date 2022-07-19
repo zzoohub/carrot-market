@@ -6,13 +6,24 @@ interface ItemProps {
   desc: string;
   price: number;
   hearts: number;
+  image: string;
 }
-export default function Item({ title, id, desc, price, hearts }: ItemProps) {
+export default function Item({
+  title,
+  id,
+  desc,
+  price,
+  hearts,
+  image,
+}: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
       <a className="flex justify-between px-4 py-10 select-none">
         <div className="flex items-center">
-          <div className="w-20 h-20 bg-gray-500 mr-2 cursor-pointer shadow-md" />
+          <img
+            src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${image}/avatar`}
+            className="w-20 h-20 bg-gray-500 mr-3 cursor-pointer shadow-md"
+          />
           <div className="flex flex-col justify-around h-full">
             <h3 className="font-semibold text-gray-600 text-[16px]  cursor-pointer">
               {title}

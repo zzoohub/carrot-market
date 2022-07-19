@@ -8,7 +8,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    body: { name, price, description },
+    body: { name, price, description, photoId },
     session: { user },
   } = req;
   if (!user) return res.status(404).redirect("/enter");
@@ -19,7 +19,7 @@ async function handler(
         name,
         price: +price,
         description,
-        image: "xx",
+        image: photoId,
         user: {
           connect: {
             id: user.id,
