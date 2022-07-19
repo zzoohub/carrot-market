@@ -67,7 +67,12 @@ const Upload: NextPage = () => {
           {photoPreview ? (
             <>
               <label className="w-full cursor-pointer h-64 rounded-md absolute z-10">
-                <input {...register("photo")} className="hidden" type="file" />
+                <input
+                  {...register("photo")}
+                  className="hidden"
+                  type="file"
+                  accept="image/*"
+                />
               </label>
               <img
                 src={photoPreview}

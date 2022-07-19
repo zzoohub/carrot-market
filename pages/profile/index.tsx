@@ -1,9 +1,10 @@
 import { Review, User } from "@prisma/client";
 import { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
 import useUser from "../../libs/client/useUser";
-import { cls } from "../../libs/client/utils";
+import { cls, imgUrl } from "../../libs/client/utils";
 import Layout from "../components/layout";
 
 const Profile: NextPage = () => {
@@ -22,10 +23,13 @@ const Profile: NextPage = () => {
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
           {user?.avatar ? (
-            <img
-              src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${user?.avatar}/avatar`}
-              className="w-16 h-16 bg-slate-500 rounded-full object-cover"
-            />
+            <div className="relative w-16 h-16 rounded-full overflow-hidden">
+              <Image
+                layout="fill"
+                src={imgUrl(user?.avatar, "avatar")}
+                className="object-cover"
+              />
+            </div>
           ) : (
             <div className="w-16 h-16 bg-slate-500 rounded-full" />
           )}

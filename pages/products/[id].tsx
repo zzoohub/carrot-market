@@ -1,10 +1,11 @@
 import { Product, User } from "@prisma/client";
 import type { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import useMutation from "../../libs/client/useMutation";
-import { cls } from "../../libs/client/utils";
+import { cls, imgUrl } from "../../libs/client/utils";
 import Button from "../components/button";
 import Layout from "../components/layout";
 
@@ -35,16 +36,22 @@ const ItemDetail: NextPage = () => {
     <Layout title="Item" canGoBack>
       <div>
         <div className="px-4 py-10">
-          <img
-            src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${data?.product?.image}/public`}
-            className="w-full h-96 bg-gray-500 object-cover"
-          />
+          <div className="relative w-full h-96 bg-gray-500">
+            <Image
+              src={imgUrl(data?.product?.image, "public")}
+              layout="fill"
+              className="object-cover"
+            />
+          </div>
           <div className="flex items-center mt-4">
             {data?.product?.user?.avatar ? (
-              <img
-                src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${data?.product?.user?.avatar}/avatar`}
-                className="h-10 w-10 bg-gray-600 rounded-full mr-2 object-cover"
-              />
+              <div className="relative h-10 w-10 bg-gray-600 rounded-full overflow-hidden mr-2">
+                <Image
+                  src={imgUrl(data?.product?.user?.avatar, "avatar")}
+                  layout="fill"
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
             )}
@@ -119,10 +126,13 @@ const ItemDetail: NextPage = () => {
             {data?.relatedProduct?.map((product) => (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <div className="select-none">
-                  <img
-                    src={`https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${product.image}/public`}
-                    className="w-full aspect-square cursor-pointer rounded-sm object-cover"
-                  />
+                  <div className="relative w-full aspect-square cursor-pointer rounded-sm">
+                    <Image
+                      src={imgUrl(product.image, "public")}
+                      layout="fill"
+                      className="object-cover"
+                    />
+                  </div>
                   <h3 className="mt-1 text-sm cursor-pointer">
                     {product.name}
                   </h3>

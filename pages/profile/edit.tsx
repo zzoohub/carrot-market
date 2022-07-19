@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useMutation from "../../libs/client/useMutation";
 import useUser from "../../libs/client/useUser";
+import { imgUrl } from "../../libs/client/utils";
 import Button from "../components/button";
 import Input from "../components/input";
 import Layout from "../components/layout";
@@ -34,10 +36,7 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
-    if (user?.avatar)
-      setAvatarPreview(
-        `https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${user?.avatar}/avatar`
-      );
+    if (user?.avatar) setAvatarPreview(imgUrl(user.avatar, "avatar"));
   }, [user, setValue]);
 
   const [setProfile, { loading, data }] =
@@ -68,9 +67,7 @@ const EditProfile: NextPage = () => {
   useEffect(() => {
     if (data && !data.ok && data.error)
       setError("formErrors", { message: data.error });
-    setAvatarPreview(
-      `https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${user?.avatar}/avatar`
-    );
+    setAvatarPreview(imgUrl(user?.avatar!, "avatar"));
   }, [data, setError]);
 
   const watchingAvatar = watch("avatar");
@@ -90,10 +87,13 @@ const EditProfile: NextPage = () => {
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">
           {avatarPreview ? (
-            <img
-              src={avatarPreview}
-              className="w-14 h-14 rounded-full bg-slate-500 overflow-hidden"
-            />
+            <div className="relative w-14 h-14 rounded-full bg-slate-500 overflow-hidden">
+              <Image
+                layout="fill"
+                src={avatarPreview}
+                className="object-cover"
+              />
+            </div>
           ) : (
             <div className="w-14 h-14 rounded-full bg-slate-500" />
           )}
