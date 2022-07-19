@@ -6,6 +6,7 @@ import useUser from "../../libs/client/useUser";
 import Button from "../components/button";
 import Input from "../components/input";
 import Layout from "../components/layout";
+import Loading from "../components/loading";
 
 const EditProfile: NextPage = () => {
   interface EditFormType {
@@ -44,30 +45,38 @@ const EditProfile: NextPage = () => {
 
   const onValid = async ({ name, email, phone, avatar }: EditFormType) => {
     if (loading) return;
-    if (avatar && avatar.length > 0 && user) {
-      const { uploadURL } = await (await fetch("/api/files")).json();
-      const form = new FormData();
-      form.append("file", avatar[0], user?.id + "");
-      const {
-        result: { id },
-      } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
-      setProfile({ name, email, phone, avatarId: id });
-    }
-
     if (email === "" && phone === "") {
       return setError("formErrors", {
         message: "Email or Phone are requierd..",
       });
     }
-    setProfile({ name, email, phone });
+    if (avatar && avatar.length > 0 && user) {
+      setCustomLoading(true);
+      const { uploadURL } = await (await fetch("/api/files")).json();
+      const form = new FormData();
+      form.append("file", avatar[0]);
+      const {
+        result: { id },
+      } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
+      setProfile({ name, email, phone, avatarId: id });
+      setCustomLoading(false);
+    } else {
+      setProfile({ name, email, phone });
+    }
   };
+
   useEffect(() => {
     if (data && !data.ok && data.error)
       setError("formErrors", { message: data.error });
+    setAvatarPreview(
+      `https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${user?.avatar}/avatar`
+    );
   }, [data, setError]);
 
   const watchingAvatar = watch("avatar");
   const [avatarPreview, setAvatarPreview] = useState("");
+  const [customLoading, setCustomLoading] = useState(false);
+
   useEffect(() => {
     if (watchingAvatar && watchingAvatar.length > 0) {
       const file = watchingAvatar[0];
@@ -77,12 +86,13 @@ const EditProfile: NextPage = () => {
 
   return (
     <Layout title="Edit profile" canGoBack>
+      {customLoading ? <Loading /> : null}
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">
           {avatarPreview ? (
             <img
               src={avatarPreview}
-              className="w-14 h-14 rounded-full bg-slate-500 object-cover"
+              className="w-14 h-14 rounded-full bg-slate-500"
             />
           ) : (
             <div className="w-14 h-14 rounded-full bg-slate-500" />
@@ -90,7 +100,7 @@ const EditProfile: NextPage = () => {
 
           <label
             htmlFor="picture"
-            className="bg-gray-600 w-20 h-20 rounded-full cursor-pointer border border-gray-300 shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 text-gray-700"
+            className="bg-gray-100 cursor-pointer border border-gray-300 shadow-sm text-sm py-1 px-2 rounded-md font-medium hover:bg-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 text-gray-700"
           >
             Change
             <input
