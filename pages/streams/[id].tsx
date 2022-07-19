@@ -77,16 +77,18 @@ const DetailStream: NextPage = () => {
     );
     createMessage(chat);
   };
-  // useEffect(() => {
-  //   if (messageData && messageData.ok) {
-  //     mutate();
-  //   }
-  // }, [messageData]);
 
   return (
     <Layout title="Stream" canGoBack>
       <div className="py-10 px-4">
-        <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+        {data?.stream.streamId ? (
+          <iframe
+            src={`https://iframe.videodelivery.net/${data?.stream.streamId}`}
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowFullScreen={true}
+            className="w-full rounded-md shadow-sm  aspect-video"
+          ></iframe>
+        ) : null}
         <div className="mt-5">
           <h1 className="text-2xl font-bold text-gray-900">
             {data?.stream?.name}
@@ -95,11 +97,28 @@ const DetailStream: NextPage = () => {
             ${data?.stream?.price}
           </span>
           <p className=" my-2 text-gray-700">{data?.stream?.description}</p>
+          {data?.stream.streamKey !== "xxx" ? (
+            <div className="flex flex-col bg-orange-100 p-2 rounded-md mt-4">
+              <span className="font-bold">Stream Key (scret)</span>
+              <span className="flex flex-col mt-2">
+                <span className="uppercase text-orange-700 text-sm font-bold">
+                  Key
+                </span>
+                <em className="text-xs">{data?.stream.streamKey}</em>
+              </span>
+              <span className="flex flex-col mt-2">
+                <span className="uppercase text-orange-700 text-sm font-bold">
+                  Url
+                </span>
+                <em className="text-xs">{data?.stream.streamUrl}</em>
+              </span>
+            </div>
+          ) : null}
         </div>
-        <div>
+        <div className="relative h-max w-full">
           <h2 className="text-2xl font-bold text-gray-900 mt-14">Live Chat</h2>
-          <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4 mt-3">
-            {data?.stream.messages.map((message) => (
+          <div className="py-10 pb-16 h-[50vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
+            {data?.stream?.messages.map((message) => (
               <UserMessage
                 key={message.id}
                 message={message.message}
@@ -107,7 +126,7 @@ const DetailStream: NextPage = () => {
               ></UserMessage>
             ))}
           </div>
-          <div className="fixed w-full max-w-md mx-auto inset-x-0 bottom-3">
+          <div className="w-full max-w-md mx-auto inset-x-0 bottom-3 -mt-10">
             <form onSubmit={handleSubmit(onValid)} className="relative">
               <input
                 {...register("message")}

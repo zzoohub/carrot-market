@@ -31,6 +31,11 @@ async function handler(
         },
       },
     });
+    const isOwner = user?.id === stream?.userId;
+    if (stream && !isOwner) {
+      stream.streamKey = "xxx";
+      stream.streamUrl = "xxx";
+    }
     res.json({
       ok: true,
       stream,

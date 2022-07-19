@@ -137,6 +137,9 @@ model Stream {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   messages    Message[]
+  streamId String
+  streamUrl String
+  streamKey String
 }
 
 model Message {

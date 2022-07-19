@@ -1,5 +1,6 @@
 import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ReactElement, ReactNode, useState } from "react";
 import useSWR from "swr";
@@ -25,7 +26,13 @@ const Live: NextPage = () => {
           <div className="pt-4  px-4" key={stream.id}>
             <Link href={`/streams/${stream.id}`}>
               <a>
-                <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+                <div className="relative w-full rounded-md shadow-sm aspect-video overflow-hidden">
+                  <Image
+                    layout="fill"
+                    className="object-cover"
+                    src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg?`}
+                  />
+                </div>
                 <h1 className="text-xl mt-2 font-bold text-gray-900">
                   {stream.name}
                 </h1>
@@ -35,7 +42,7 @@ const Live: NextPage = () => {
         ))}
 
         <div className="flex w-[300px] m-auto left-0 right-0 justify-center border-transparent">
-          {[...Array.from(Array(data?.streams.length).keys())].map((index) => (
+          {[...Array.from(Array(data?.streams?.length).keys())].map((index) => (
             <div
               onClick={movePage}
               className={cls(
@@ -49,7 +56,7 @@ const Live: NextPage = () => {
           ))}
         </div>
 
-        <FloatingButton href={`/streams/:id`}>
+        <FloatingButton href={`/streams/create`}>
           <svg
             className="w-6 h-6"
             fill="none"
