@@ -33,14 +33,27 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/DREC0JqkZ64KUl7_6yEP3g/${user?.avatar}/avatar`
+      );
   }, [user, setValue]);
 
   const [setProfile, { loading, data }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = ({ name, email, phone, avatar }: EditFormType) => {
-    console.log(avatar);
-    return;
+
+  const onValid = async ({ name, email, phone, avatar }: EditFormType) => {
     if (loading) return;
+    if (avatar && avatar.length > 0 && user) {
+      const { uploadURL } = await (await fetch("/api/files")).json();
+      const form = new FormData();
+      form.append("file", avatar[0], user?.id + "");
+      const {
+        result: { id },
+      } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
+      setProfile({ name, email, phone, avatarId: id });
+    }
+
     if (email === "" && phone === "") {
       return setError("formErrors", {
         message: "Email or Phone are requierd..",
@@ -69,7 +82,7 @@ const EditProfile: NextPage = () => {
           {avatarPreview ? (
             <img
               src={avatarPreview}
-              className="w-14 h-14 rounded-full bg-slate-500"
+              className="w-14 h-14 rounded-full bg-slate-500 object-cover"
             />
           ) : (
             <div className="w-14 h-14 rounded-full bg-slate-500" />
