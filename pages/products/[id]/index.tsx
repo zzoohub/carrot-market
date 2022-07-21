@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import useMutation from "../../libs/client/useMutation";
-import { cls, imgUrl } from "../../libs/client/utils";
-import Button from "../components/button";
-import Layout from "../components/layout";
+import useMutation from "../../../libs/client/useMutation";
+import useUser from "../../../libs/client/useUser";
+import { cls, imgUrl } from "../../../libs/client/utils";
+import Button from "../../components/button";
+import Layout from "../../components/layout";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -21,6 +22,7 @@ interface ProductResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
+  const { user } = useUser();
   const { data, mutate } = useSWR<ProductResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
@@ -58,7 +60,13 @@ const ItemDetail: NextPage = () => {
 
             <div>
               <p className="font-bold text-sm">{data?.product?.user?.name}</p>
-              <Link href={`/users/profile/${data?.product?.user?.id}`}>
+              <Link
+                href={
+                  user?.id === data?.product.userId
+                    ? `/profile`
+                    : `/users/profile/${data?.product?.user?.id}`
+                }
+              >
                 <a className="text-gray-600 text-xs mt-1">
                   View profile &rarr;
                 </a>
@@ -76,47 +84,53 @@ const ItemDetail: NextPage = () => {
               {data?.product?.description}
             </p>
             <div className="flex items-center justify-between mt-3">
-              <Button text="Talk to seller"></Button>
-              <button
-                onClick={onFavClick}
-                className={cls(
-                  `p-2 ml-1 rounded-md`,
-                  data?.isLiked
-                    ? "hover:bg-red-100 text-red-500"
-                    : "text-gray-500 hover:bg-gray-100"
-                )}
-              >
-                {data?.isLiked ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+              {user?.id !== data?.product.userId ? (
+                <>
+                  <Link href={`/products/${data?.product.id}/privateChat`}>
+                    <Button text="Talk to seller"></Button>
+                  </Link>
+                  <button
+                    onClick={onFavClick}
+                    className={cls(
+                      `p-2 ml-1 rounded-md`,
+                      data?.isLiked
+                        ? "hover:bg-red-100 text-red-500"
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-5 w-5 "
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                )}
-              </button>
+                    {data?.isLiked ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="h-5 w-5 "
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </>
+              ) : null}
             </div>
           </div>
         </div>

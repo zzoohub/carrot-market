@@ -41,7 +41,7 @@ const Live: NextPage = () => {
           </div>
         ))}
 
-        <div className="flex w-[300px] m-auto left-0 right-0 justify-center border-transparent">
+        {/* <div className="flex w-[300px] m-auto left-0 right-0 justify-center border-transparent">
           {[...Array.from(Array(data?.streams?.length).keys())].map((index) => (
             <div
               onClick={movePage}
@@ -54,7 +54,7 @@ const Live: NextPage = () => {
               {index + 1}
             </div>
           ))}
-        </div>
+        </div> */}
 
         <FloatingButton href={`/streams/create`}>
           <svg

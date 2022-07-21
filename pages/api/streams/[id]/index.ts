@@ -17,10 +17,10 @@ async function handler(
         id: +id.toString(),
       },
       include: {
-        messages: {
+        LiveChats: {
           select: {
             id: true,
-            message: true,
+            liveMessage: true,
             user: {
               select: {
                 id: true,
