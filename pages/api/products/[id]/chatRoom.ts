@@ -35,6 +35,7 @@ async function handler(
             user: true,
           },
         },
+        product: true,
       },
     });
     if (alreadyChatRoom) {

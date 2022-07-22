@@ -1,11 +1,13 @@
-import { ChatRoom, PrivateChat, User } from "@prisma/client";
+import { ChatRoom, PrivateChat, Product, User } from "@prisma/client";
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import useMutation from "../../../libs/client/useMutation";
 import useUser from "../../../libs/client/useUser";
+import { imgUrl } from "../../../libs/client/utils";
 import Layout from "../../components/layout";
 import UserMessage from "../../components/message";
 
@@ -22,6 +24,7 @@ interface PrivateChatWithUser extends PrivateChat {
 }
 interface ChatRoomDetail extends ChatRoom {
   PrivateChats: PrivateChatWithUser[];
+  product: Product;
 }
 interface ChatRoomResponse {
   ok: boolean;
@@ -41,7 +44,8 @@ const PrivateChat: NextPage = () => {
   const [popup, setPopup] = useState(false);
 
   const confirm = async (event: React.FormEvent) => {
-    const tradeData = await fetch(`/api/product/${router.query.id}/trade`, {
+    event.preventDefault();
+    const tradeData = await fetch(`/api/products/${router.query.id}/trade`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +54,7 @@ const PrivateChat: NextPage = () => {
     if (tradeData && tradeData.ok) {
       router.push("/");
     }
-    setPopup(false);
+    // setPopup(false);
   };
 
   const onValid = (form: ChatForm) => {
@@ -81,12 +85,30 @@ const PrivateChat: NextPage = () => {
 
   return (
     <Layout title="Private Chat" canGoBack>
-      <div className="relative h-max w-full">
-        <h2 className="text-2xl font-bold text-gray-900 mt-16">
-          Talk to each ather
-        </h2>
-        <div className="py-10 pb-16 h-[75vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
-          {data?.chatRoom.PrivateChats.map((chat) => (
+      <div className="relative h-max w-full px-2">
+        <div className="h-[18vh] flex pt-2">
+          <div className="relative w-48 aspect-square rounded-md overflow-hidden mr-2">
+            <Image
+              layout="fill"
+              src={imgUrl(data?.chatRoom?.product?.image, "public")}
+              className="object-cover"
+            ></Image>
+          </div>
+          <div className="flex flex-col py-2">
+            <h3 className="font-bold text-slate-800 text-md mb-1">
+              {data?.chatRoom?.product?.name}
+            </h3>
+            <strong className="font-bold text-xl text-orange-500 cursor-pointer text-dec">
+              {data?.chatRoom?.product?.price} ￦
+            </strong>
+
+            <p className="text-sm mt-4">
+              {data?.chatRoom?.product?.description}
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col justify-end py-10 pb-16 h-[65vh] overflow-y-auto  px-4 mt-2  rounded-md bg-slate-200">
+          {data?.chatRoom?.PrivateChats?.map((chat) => (
             <UserMessage
               key={chat.id}
               message={chat.chat}
@@ -107,15 +129,17 @@ const PrivateChat: NextPage = () => {
             </button>
           </form>
         </div>
+
+        <span
+          onClick={() => {
+            setPopup(true);
+          }}
+          className="w-full block py-3 bg-orange-500 rounded-md text-center leading-[22px] text-white font-semibold  cursor-pointer hover:bg-orange-600 mt-5"
+        >
+          구매확정
+        </span>
       </div>
-      <span
-        onClick={() => {
-          setPopup(true);
-        }}
-        className="w-full block py-3 bg-orange-500 rounded-md text-center leading-[22px] text-white font-semibold  cursor-pointer hover:bg-orange-600 mt-5"
-      >
-        구매확정
-      </span>
+
       {popup ? (
         <form
           onSubmit={confirm}

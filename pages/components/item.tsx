@@ -20,7 +20,7 @@ export default function Item({
 }: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
-      <a className="flex justify-between px-4 py-10 select-none">
+      <a className="flex justify-between px-4 py-10 select-none hover:bg-slate-50">
         <div className="flex items-center">
           <div className="relative w-20 h-20 bg-gray-500 mr-3 cursor-pointer shadow-md">
             <Image
@@ -37,7 +37,7 @@ export default function Item({
               {desc}
             </span>
             <span className="font-bold text-lg text-orange-500 cursor-pointer">
-              {`${price}$`}
+              {`${price} ￦`}
             </span>
           </div>
         </div>

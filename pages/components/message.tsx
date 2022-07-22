@@ -15,7 +15,7 @@ export default function UserMessage({
   return (
     <div
       className={cls(
-        "flex items-center space-x-2",
+        "flex items-center space-x-2 my-1",
         reversed ? "flex-row-reverse space-x-reverse" : ""
       )}
     >
@@ -27,7 +27,7 @@ export default function UserMessage({
         ></Image>
       </div>
 
-      <div className="border py-2 px-3 rounded-xl text-sm">
+      <div className="py-2 px-3 rounded-xl text-sm bg-white border border-slate-300">
         <p>{message}</p>
       </div>
     </div>
