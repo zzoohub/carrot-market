@@ -9,31 +9,11 @@ import Layout from "../../components/layout";
 import UserMessage from "../../components/message";
 
 interface ChatForm {
-  message: string;
+  chat: string;
 }
-interface CreateMessageResponse {
+interface CreateChatResponse {
   ok: boolean;
   newChat: PrivateChat;
-}
-
-interface PrivateChatsWithUsers extends PrivateChat {
-  seller: {
-    id: number;
-    avatar: string;
-    name: string;
-  };
-  buyer: {
-    id: number;
-    avatar: string;
-    name: string;
-  };
-}
-interface ProductDetail extends Product {
-  PrivateChats: PrivateChatsWithUsers[];
-}
-interface ProductDetailResponse {
-  ok: boolean;
-  productDetail: ProductDetail;
 }
 
 const PrivateChat: NextPage = () => {
@@ -41,17 +21,52 @@ const PrivateChat: NextPage = () => {
   const { user } = useUser();
   const { register, handleSubmit, reset } = useForm<ChatForm>();
   const [createMessage, { data: newChat, loading: newChatLoading }] =
-    useMutation<CreateMessageResponse>(
-      `/api/products/${router.query.id}/privateChat`
+    useMutation<CreateChatResponse>(
+      `/api/products/${router.query.id}/chatRoom`
     );
-  const { data, mutate } = useSWR<ProductDetailResponse>(
-    router.query.id ? `/api/products/${router.query.id}/privateChat` : null
+  const { data, mutate } = useSWR(
+    router.query.id ? `/api/products/${router.query.id}/chatRoom` : null
   );
+  console.log(data);
 
   const onValid = (form: ChatForm) => {
     if (newChatLoading) return;
     reset();
-    mutate();
+    // mutate(
+    //   (prev) =>
+    //     prev && {
+    //       ...prev,
+    //       productDetail: {
+    //         ...data?.productDetail,
+    //         PrivateChats: [
+    //           ...data?.productDetail.PrivateChats,
+    //           {
+    //             privateMessage: form.message,
+    //             seller: {
+    //               id:
+    //                 data?.productDetail.userId === user?.id
+    //                   ? user?.id
+    //                   : data?.productDetail.userId,
+    //               avatar:
+    //                 data?.productDetail.userId === user?.id
+    //                   ? user?.avatar
+    //                   : data?.productDetail.user.avatar,
+    //             },
+    //             buyer: {
+    //               id:
+    //                 data?.productDetail.userId === user?.id
+    //                   ? user?.id
+    //                   : data?.productDetail.userId,
+    //               avatar:
+    //                 data?.productDetail.userId === user?.id
+    //                   ? user?.avatar
+    //                   : data?.productDetail.user.avatar,
+    //             },
+    //           },
+    //         ],
+    //       },
+    //     }
+    // );
     createMessage(form);
   };
 
@@ -62,7 +77,7 @@ const PrivateChat: NextPage = () => {
           Talk to each ather
         </h2>
         <div className="py-10 pb-16 h-[80vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
-          {data?.productDetail?.PrivateChats?.map((chat) => (
+          {/* {data?.productDetail?.PrivateChats?.map((chat) => (
             <UserMessage
               key={chat.id}
               message={chat.privateMessage}
@@ -73,12 +88,12 @@ const PrivateChat: NextPage = () => {
                   : chat.buyer.avatar
               }
             ></UserMessage>
-          ))}
+          ))} */}
         </div>
         <div className="w-full max-w-md mx-auto inset-x-0 bottom-3 -mt-10">
           <form onSubmit={handleSubmit(onValid)} className="relative">
             <input
-              {...register("message")}
+              {...register("chat")}
               type="text"
               className="w-full border rounded-full focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-none px-3 py-1 text-sm shadow-sm"
             />

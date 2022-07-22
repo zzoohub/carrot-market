@@ -86,8 +86,10 @@ const ItemDetail: NextPage = () => {
             <div className="flex items-center justify-between mt-3">
               {user?.id !== data?.product.userId ? (
                 <>
-                  <Link href={`/products/${data?.product.id}/privateChat`}>
-                    <Button text="Talk to seller"></Button>
+                  <Link href={`/products/${data?.product.id}/chatRoom`}>
+                    <a className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none text-center">
+                      Talk to Seller
+                    </a>
                   </Link>
                   <button
                     onClick={onFavClick}

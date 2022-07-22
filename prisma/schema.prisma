@@ -32,8 +32,9 @@ model User{
   Pulchases Purchase[]
   Streams Stream[]
   LiveChats LiveChat[]
-  Sellers PrivateChat[] @relation(name: "seller")
-  Buyers PrivateChat[] @relation(name: "buyer")
+  Sellers ChatRoom[] @relation(name: "seller")
+  Buyers ChatRoom[] @relation(name: "buyer")
+  PrivateChats PrivateChat[]
 }
 
 model Token{
@@ -57,7 +58,7 @@ model Product{
   Favorites Favorite[]
   Sales Sale[]
   Pulchases Purchase[]
-  PrivateChats PrivateChat[]
+  ChatRooms ChatRoom[]
 }
 model Post{
   id Int @id @default(autoincrement())
@@ -156,15 +157,25 @@ model LiveChat {
   streamId  Int
 }
 
-model PrivateChat {
+model ChatRoom {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  privateMessage String @db.MediumText
   seller User @relation(name: "seller", fields: [sellerId], references: [id], onDelete: Cascade)
   sellerId Int
   buyer User @relation(name: "buyer", fields: [buyerId], references: [id], onDelete: Cascade)
   buyerId Int
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
+  PrivateChats PrivateChat[]
+}
+model PrivateChat{
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  chatRoomId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  chat String @db.MediumText
 }
