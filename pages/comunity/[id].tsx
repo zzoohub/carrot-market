@@ -1,12 +1,13 @@
 import { Answer, Post, User } from "@prisma/client";
 import type { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import useMutation from "../../libs/client/useMutation";
-import { cls } from "../../libs/client/utils";
+import { cls, imgUrl } from "../../libs/client/utils";
 import Button from "../components/button";
 import Layout from "../components/layout";
 import Textarea from "../components/Textarea";
@@ -81,7 +82,13 @@ const CommunityPostDetail: NextPage = () => {
           동네질문
         </span>
         <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300" />
+          <div className="relative w-10 h-10 rounded-full bg-slate-300 overflow-hidden">
+            <Image
+              layout="fill"
+              className="object-cover"
+              src={imgUrl(postData?.post?.user?.avatar, "avatar")}
+            />
+          </div>
           <div>
             <Link href={`/users/${postData?.post?.user.id}`}>
               <a>
@@ -148,15 +155,24 @@ const CommunityPostDetail: NextPage = () => {
         <div className="px-4 my-5 space-y-5">
           {postData?.post?.Answers.map((answer) => (
             <div key={answer?.id} className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-slate-200 rounded-full" />
+              <div className="relative w-8 h-8 rounded-full bg-slate-300 overflow-hidden">
+                <Image
+                  layout="fill"
+                  className="object-cover"
+                  src={imgUrl(answer.user.avatar, "avatar")}
+                />
+              </div>
               <div>
-                <span className="text-sm block font-medium text-gray-700">
-                  {answer?.user?.name}
-                </span>
-                <span className="text-xs text-gray-500 block ">
-                  {String(answer?.createdAt)}
-                </span>
-                <p className="text-gray-700">{answer?.answer}</p>
+                <div className="flex justify-between items-center w-[400px]">
+                  <span className="text-xs block font-medium text-gray-700">
+                    {answer?.user?.name}
+                  </span>
+                  <span className="text-xs text-gray-500 block ">
+                    {String(answer?.createdAt)}
+                  </span>
+                </div>
+
+                <p className="text-gray-700 text-sm mt-2">{answer?.answer}</p>
               </div>
             </div>
           ))}

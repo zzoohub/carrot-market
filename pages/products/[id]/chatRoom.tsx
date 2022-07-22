@@ -1,6 +1,7 @@
-import { PrivateChat, Product } from "@prisma/client";
+import { ChatRoom, PrivateChat, User } from "@prisma/client";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import useMutation from "../../../libs/client/useMutation";
@@ -16,6 +17,16 @@ interface CreateChatResponse {
   newChat: PrivateChat;
 }
 
+interface PrivateChatWithUser extends PrivateChat {
+  user: User;
+}
+interface ChatRoomDetail extends ChatRoom {
+  PrivateChats: PrivateChatWithUser[];
+}
+interface ChatRoomResponse {
+  ok: boolean;
+  chatRoom: ChatRoomDetail;
+}
 const PrivateChat: NextPage = () => {
   const router = useRouter();
   const { user } = useUser();
@@ -24,49 +35,47 @@ const PrivateChat: NextPage = () => {
     useMutation<CreateChatResponse>(
       `/api/products/${router.query.id}/chatRoom`
     );
-  const { data, mutate } = useSWR(
+  const { data, mutate } = useSWR<ChatRoomResponse>(
     router.query.id ? `/api/products/${router.query.id}/chatRoom` : null
   );
-  console.log(data);
+  const [popup, setPopup] = useState(false);
+
+  const confirm = async (event: React.FormEvent) => {
+    const tradeData = await fetch(`/api/product/${router.query.id}/trade`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
+    if (tradeData && tradeData.ok) {
+      router.push("/");
+    }
+    setPopup(false);
+  };
 
   const onValid = (form: ChatForm) => {
     if (newChatLoading) return;
     reset();
-    // mutate(
-    //   (prev) =>
-    //     prev && {
-    //       ...prev,
-    //       productDetail: {
-    //         ...data?.productDetail,
-    //         PrivateChats: [
-    //           ...data?.productDetail.PrivateChats,
-    //           {
-    //             privateMessage: form.message,
-    //             seller: {
-    //               id:
-    //                 data?.productDetail.userId === user?.id
-    //                   ? user?.id
-    //                   : data?.productDetail.userId,
-    //               avatar:
-    //                 data?.productDetail.userId === user?.id
-    //                   ? user?.avatar
-    //                   : data?.productDetail.user.avatar,
-    //             },
-    //             buyer: {
-    //               id:
-    //                 data?.productDetail.userId === user?.id
-    //                   ? user?.id
-    //                   : data?.productDetail.userId,
-    //               avatar:
-    //                 data?.productDetail.userId === user?.id
-    //                   ? user?.avatar
-    //                   : data?.productDetail.user.avatar,
-    //             },
-    //           },
-    //         ],
-    //       },
-    //     }
-    // );
+    if (data) {
+      mutate(
+        (prev) =>
+          prev &&
+          ({
+            ...prev,
+            chatRoom: {
+              ...data?.chatRoom,
+              PrivateChats: [
+                ...data?.chatRoom?.PrivateChats,
+                {
+                  chat: form.chat,
+                  user: { avatar: user?.avatar, id: user?.id },
+                },
+              ],
+            },
+          } as any),
+        false
+      );
+    }
     createMessage(form);
   };
 
@@ -76,21 +85,17 @@ const PrivateChat: NextPage = () => {
         <h2 className="text-2xl font-bold text-gray-900 mt-16">
           Talk to each ather
         </h2>
-        <div className="py-10 pb-16 h-[80vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
-          {/* {data?.productDetail?.PrivateChats?.map((chat) => (
+        <div className="py-10 pb-16 h-[75vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
+          {data?.chatRoom.PrivateChats.map((chat) => (
             <UserMessage
               key={chat.id}
-              message={chat.privateMessage}
-              reversed={chat.sellerId === user?.id ? false : true}
-              imgId={
-                chat.sellerId === user?.id
-                  ? chat.seller.avatar
-                  : chat.buyer.avatar
-              }
+              message={chat.chat}
+              reversed={chat.user.id === user?.id}
+              imgId={chat.user.avatar!}
             ></UserMessage>
-          ))} */}
+          ))}
         </div>
-        <div className="w-full max-w-md mx-auto inset-x-0 bottom-3 -mt-10">
+        <div className="w-full max-w-md mx-auto inset-x-0 -mt-10">
           <form onSubmit={handleSubmit(onValid)} className="relative">
             <input
               {...register("chat")}
@@ -103,6 +108,33 @@ const PrivateChat: NextPage = () => {
           </form>
         </div>
       </div>
+      <span
+        onClick={() => {
+          setPopup(true);
+        }}
+        className="w-full block py-3 bg-orange-500 rounded-md text-center leading-[22px] text-white font-semibold  cursor-pointer hover:bg-orange-600 mt-5"
+      >
+        구매확정
+      </span>
+      {popup ? (
+        <form
+          onSubmit={confirm}
+          className="absolute inset-0 m-auto h-max bg-slate-100 w-2/3 border flex flex-col justify-center items-center py-4 rounded-sm"
+        >
+          <span>구매를 확정지으시겠습니까?</span>
+          <div className="flex justify-center items-center w-full mt-5">
+            <button className="bg-orange-400 text-white w-20 rounded-sm hover:bg-orange-500">
+              네
+            </button>
+            <div
+              onClick={() => setPopup(false)}
+              className="cursor-pointer ml-5 rounded-sm border border-slate-300 bg-white w-20 text-center"
+            >
+              아니요
+            </div>
+          </div>
+        </form>
+      ) : null}
     </Layout>
   );
 };

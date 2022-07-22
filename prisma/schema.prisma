@@ -59,6 +59,7 @@ model Product{
   Sales Sale[]
   Pulchases Purchase[]
   ChatRooms ChatRoom[]
+  traded Boolean @default(false)
 }
 model Post{
   id Int @id @default(autoincrement())

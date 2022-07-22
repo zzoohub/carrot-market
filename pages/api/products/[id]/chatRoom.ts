@@ -10,7 +10,7 @@ async function handler(
   const {
     query: { id },
     session: { user },
-    body: { message },
+    body: { chat },
   } = req;
   const product = await client.product.findUnique({
     where: {
@@ -82,7 +82,7 @@ async function handler(
       data: {
         user: {
           connect: {
-            id: +user?.id!,
+            id: user?.id,
           },
         },
         chatRoom: {
@@ -90,6 +90,7 @@ async function handler(
             id: chatRoom?.id,
           },
         },
+        chat,
       },
     });
 
