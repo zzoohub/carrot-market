@@ -1,12 +1,17 @@
-import { cls } from "../../libs/client/utils";
+import Image from "next/image";
+import { cls, imgUrl } from "../../libs/client/utils";
 
 interface MessageProps {
   reversed?: boolean;
-  avartarUrl?: string;
+  imgId?: string;
   message: string;
 }
 
-export default function UserMessage({ reversed, message }: MessageProps) {
+export default function UserMessage({
+  reversed,
+  message,
+  imgId,
+}: MessageProps) {
   return (
     <div
       className={cls(
@@ -14,7 +19,14 @@ export default function UserMessage({ reversed, message }: MessageProps) {
         reversed ? "flex-row-reverse space-x-reverse" : ""
       )}
     >
-      <div className="h-7 w-7 rounded-full bg-slate-500" />
+      <div className="relative h-7 w-7 rounded-full bg-slate-500 overflow-hidden">
+        <Image
+          src={imgUrl(imgId, "avatar")}
+          layout="fill"
+          className="object-cover"
+        ></Image>
+      </div>
+
       <div className="border py-2 px-3 rounded-xl text-sm">
         <p>{message}</p>
       </div>

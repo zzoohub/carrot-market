@@ -10,12 +10,12 @@ async function handler(
   const {
     session: { user },
     query: { id },
-    body: { message },
+    body: { liveMessage },
   } = req;
 
-  const newMessage = await client.message.create({
+  const newChats = await client.liveChat.create({
     data: {
-      message,
+      liveMessage,
       user: {
         connect: {
           id: user?.id,
@@ -30,7 +30,7 @@ async function handler(
   });
   res.json({
     ok: true,
-    newMessage,
+    newChats,
   });
 }
 
