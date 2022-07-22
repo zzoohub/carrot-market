@@ -2,7 +2,7 @@ import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactElement, ReactNode, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { cls } from "../../libs/client/utils";
 import FloatingButton from "../components/floating-button";
@@ -30,7 +30,7 @@ const Live: NextPage = () => {
                   <Image
                     layout="fill"
                     className="object-cover"
-                    src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg?`}
+                    src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg`}
                   />
                 </div>
                 <h1 className="text-xl mt-2 font-bold text-gray-900">
