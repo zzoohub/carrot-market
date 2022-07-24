@@ -1,14 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../libs/server/withSession";
+import client from "../../../../../libs/server/client";
+import withHandler, {
+  ResponseType,
+} from "../../../../../libs/server/withHandler";
+import { withApiSession } from "../../../../../libs/server/withSession";
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    query: { id },
+    query: { id, buyerId },
     session: { user },
     body: { chat },
   } = req;
@@ -16,18 +18,16 @@ async function handler(
     where: {
       id: +id,
     },
-    select: {
-      id: true,
-      userId: true,
-    },
   });
 
+  console.log(req.query);
+
   if (req.method === "GET") {
-    const alreadyChatRoom = await client.chatRoom.findFirst({
+    const chatRoom = await client.chatRoom.findFirst({
       where: {
-        productId: +id,
+        productId: product?.id,
         sellerId: product?.userId,
-        buyerId: user?.id,
+        buyerId: buyerId ? +buyerId : user?.id,
       },
       include: {
         PrivateChats: {
@@ -35,49 +35,55 @@ async function handler(
             user: true,
           },
         },
-        product: true,
-      },
-    });
-    if (alreadyChatRoom) {
-      return res.json({
-        ok: true,
-        chatRoom: alreadyChatRoom,
-      });
-    }
-    const newChatRoom = await client.chatRoom.create({
-      data: {
-        seller: {
-          connect: {
-            id: product?.userId,
-          },
-        },
-        buyer: {
-          connect: {
-            id: user?.id,
-          },
-        },
-        product: {
-          connect: {
-            id: product?.id,
-          },
-        },
       },
     });
 
+    if (chatRoom) {
+      return res.json({
+        ok: true,
+        product,
+        chatRoom,
+      });
+    }
+
     return res.json({
       ok: true,
-      chatRoom: newChatRoom,
+      product,
     });
   }
 
   if (req.method === "POST") {
-    const chatRoom = await client.chatRoom.findFirst({
+    let chatRoom;
+    const existingChatRoom = await client.chatRoom.findFirst({
       where: {
         productId: product?.id,
         sellerId: product?.userId,
-        buyerId: user?.id,
+        buyerId: buyerId ? +buyerId : user?.id,
       },
     });
+    if (existingChatRoom) {
+      chatRoom = existingChatRoom;
+    } else {
+      chatRoom = await client.chatRoom.create({
+        data: {
+          seller: {
+            connect: {
+              id: product?.userId,
+            },
+          },
+          buyer: {
+            connect: {
+              id: user?.id,
+            },
+          },
+          product: {
+            connect: {
+              id: product?.id,
+            },
+          },
+        },
+      });
+    }
 
     const newChat = await client.privateChat.create({
       data: {

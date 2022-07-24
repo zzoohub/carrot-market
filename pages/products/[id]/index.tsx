@@ -43,6 +43,7 @@ const ItemDetail: NextPage = () => {
               src={imgUrl(data?.product?.image, "public")}
               layout="fill"
               className="object-cover"
+              priority
             />
           </div>
           <div className="flex items-center mt-4">
@@ -132,7 +133,13 @@ const ItemDetail: NextPage = () => {
                     )}
                   </button>
                 </>
-              ) : null}
+              ) : (
+                <Link href={`/products/${data?.product.id}/chatList`}>
+                  <a className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none text-center">
+                    받은 문의 메세지
+                  </a>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -144,9 +151,10 @@ const ItemDetail: NextPage = () => {
                 <div className="select-none">
                   <div className="relative w-full aspect-square cursor-pointer rounded-sm">
                     <Image
-                      src={imgUrl(product.image, "public")}
+                      src={imgUrl(product?.image, "public")}
                       layout="fill"
                       className="object-cover"
+                      priority
                     />
                   </div>
                   <h3 className="mt-1 text-sm cursor-pointer">

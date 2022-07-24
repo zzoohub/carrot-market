@@ -10,11 +10,13 @@ export default function useCoords() {
     latitude: 0,
     longitude: 0,
   });
+
   const onSuccess = ({
     coords: { latitude, longitude },
   }: GeolocationPosition) => {
     setCoords({ latitude, longitude });
   };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess);
   }, []);

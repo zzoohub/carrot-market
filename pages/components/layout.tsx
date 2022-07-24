@@ -23,7 +23,7 @@ export default function Layout({
   }
 
   return (
-    <div className="max-w-lg bg-white">
+    <div className="max-w-lg h-max">
       <header className="flex justify-center items-center w-full h-[50px] fixed top-0 border-b bg-white text-lg font-semibold max-w-lg z-10">
         {canGoBack ? (
           <div
@@ -48,7 +48,7 @@ export default function Layout({
         ) : null}
         {title}
       </header>
-      <main className={cls("mt-12", hasTabBar ? "mb-16" : "")}>{children}</main>
+      <main className={cls("pt-12", hasTabBar ? "mb-16" : "")}>{children}</main>
       {hasTabBar ? (
         <nav className="flex justify-evenly items-center w-full h-[50px] fixed bottom-0 border-t bg-white text-sm font-semibold max-w-lg">
           <Link href="/">

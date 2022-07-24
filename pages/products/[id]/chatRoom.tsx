@@ -24,11 +24,11 @@ interface PrivateChatWithUser extends PrivateChat {
 }
 interface ChatRoomDetail extends ChatRoom {
   PrivateChats: PrivateChatWithUser[];
-  product: Product;
 }
 interface ChatRoomResponse {
   ok: boolean;
-  chatRoom: ChatRoomDetail;
+  product: Product;
+  chatRoom?: ChatRoomDetail;
 }
 const PrivateChat: NextPage = () => {
   const router = useRouter();
@@ -36,10 +36,17 @@ const PrivateChat: NextPage = () => {
   const { register, handleSubmit, reset } = useForm<ChatForm>();
   const [createMessage, { data: newChat, loading: newChatLoading }] =
     useMutation<CreateChatResponse>(
-      `/api/products/${router.query.id}/chatRoom`
+      `/api/products/${router.query.id}/chatRoom/${
+        router.query.buyerId ? router.query.buyerId : user?.id
+      }`
     );
+
   const { data, mutate } = useSWR<ChatRoomResponse>(
-    router.query.id ? `/api/products/${router.query.id}/chatRoom` : null
+    router.query.id
+      ? `/api/products/${router.query.id}/chatRoom/${
+          router.query.buyerId ? router.query.buyerId : user?.id
+        }`
+      : null
   );
   const [popup, setPopup] = useState(false);
 
@@ -54,7 +61,6 @@ const PrivateChat: NextPage = () => {
     if (tradeData && tradeData.ok) {
       router.push("/");
     }
-    // setPopup(false);
   };
 
   const onValid = (form: ChatForm) => {
@@ -69,7 +75,7 @@ const PrivateChat: NextPage = () => {
             chatRoom: {
               ...data?.chatRoom,
               PrivateChats: [
-                ...data?.chatRoom?.PrivateChats,
+                ...data?.chatRoom?.PrivateChats!,
                 {
                   chat: form.chat,
                   user: { avatar: user?.avatar, id: user?.id },
@@ -90,32 +96,34 @@ const PrivateChat: NextPage = () => {
           <div className="relative w-48 aspect-square rounded-md overflow-hidden mr-2">
             <Image
               layout="fill"
-              src={imgUrl(data?.chatRoom?.product?.image, "public")}
+              src={imgUrl(data?.product?.image, "public")}
               className="object-cover"
+              priority
             ></Image>
           </div>
           <div className="flex flex-col py-2">
             <h3 className="font-bold text-slate-800 text-md mb-1">
-              {data?.chatRoom?.product?.name}
+              {data?.product?.name}
             </h3>
             <strong className="font-bold text-xl text-orange-500 cursor-pointer text-dec">
-              {data?.chatRoom?.product?.price} ￦
+              {data?.product?.price} ￦
             </strong>
 
-            <p className="text-sm mt-4">
-              {data?.chatRoom?.product?.description}
-            </p>
+            <p className="text-sm mt-4">{data?.product?.description}</p>
           </div>
         </div>
         <div className="flex flex-col justify-end py-10 pb-16 h-[65vh] overflow-y-auto  px-4 mt-2  rounded-md bg-slate-200">
-          {data?.chatRoom?.PrivateChats?.map((chat) => (
-            <UserMessage
-              key={chat.id}
-              message={chat.chat}
-              reversed={chat.user.id === user?.id}
-              imgId={chat.user.avatar!}
-            ></UserMessage>
-          ))}
+          {data?.chatRoom
+            ? data?.chatRoom?.PrivateChats?.map((chat) => (
+                <div key={chat.id}>
+                  <UserMessage
+                    message={chat.chat}
+                    reversed={chat.user.id === user?.id}
+                    imgId={chat.user.avatar!}
+                  ></UserMessage>
+                </div>
+              ))
+            : null}
         </div>
         <div className="w-full max-w-md mx-auto inset-x-0 -mt-10">
           <form onSubmit={handleSubmit(onValid)} className="relative">
@@ -130,22 +138,24 @@ const PrivateChat: NextPage = () => {
           </form>
         </div>
 
-        <span
-          onClick={() => {
-            setPopup(true);
-          }}
-          className="w-full block py-3 bg-orange-500 rounded-md text-center leading-[22px] text-white font-semibold  cursor-pointer hover:bg-orange-600 mt-5"
-        >
-          구매확정
-        </span>
+        {!router.query.buyerId ? (
+          <span
+            onClick={() => {
+              setPopup(true);
+            }}
+            className="w-full block py-3 bg-orange-500 rounded-md text-center leading-[22px] text-white font-semibold  cursor-pointer hover:bg-orange-600 mt-5"
+          >
+            구매확정
+          </span>
+        ) : null}
       </div>
 
       {popup ? (
         <form
           onSubmit={confirm}
-          className="absolute inset-0 m-auto h-max bg-slate-100 w-2/3 border flex flex-col justify-center items-center py-4 rounded-sm"
+          className="absolute inset-0 m-auto h-max bg-slate-900 rounded-md w-[300px] border flex flex-col justify-center items-center py-4"
         >
-          <span>구매를 확정지으시겠습니까?</span>
+          <span className="text-white">구매를 확정지으시겠습니까?</span>
           <div className="flex justify-center items-center w-full mt-5">
             <button className="bg-orange-400 text-white w-20 rounded-sm hover:bg-orange-500">
               네
