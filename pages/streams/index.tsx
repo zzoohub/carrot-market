@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
-import { cls } from "../../libs/client/utils";
 import FloatingButton from "../components/floating-button";
 import Layout from "../components/layout";
 
@@ -32,10 +31,18 @@ const Live: NextPage = () => {
                     className="object-cover"
                     src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg`}
                   />
+                  <div className="bg-red-500 absolute right-3 top-3 px-2 text-white rounded-sm text-sm">
+                    LIVE
+                  </div>
                 </div>
-                <h1 className="text-xl mt-2 font-bold text-gray-900">
-                  {stream.name}
-                </h1>
+                <div className="flex justify-between">
+                  <h1 className="text-xs mt-1 font-bold text-slate-800 w-[70%] truncate">
+                    {stream.title}
+                  </h1>
+                  <h2 className="text-xs mt-1 font-bold text-slate-800 w-max max-w-[25%] truncate">
+                    {stream.name}
+                  </h2>
+                </div>
               </a>
             </Link>
           </div>

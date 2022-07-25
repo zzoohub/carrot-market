@@ -13,6 +13,7 @@ interface StreamForm {
   name: string;
   price: number;
   description: string;
+  title: string;
 }
 interface CreateStreamResponse {
   ok: boolean;
@@ -37,6 +38,13 @@ const Create: NextPage = () => {
   return (
     <Layout title="Create stream" canGoBack>
       <form onSubmit={handleSubmit(onVaild)} className=" space-y-5 py-10 px-4">
+        <Input
+          register={register("title", { required: true })}
+          type="text"
+          name="title"
+          label="Stream Title"
+          kind="text"
+        ></Input>
         <Input
           register={register("name", { required: true })}
           type="text"

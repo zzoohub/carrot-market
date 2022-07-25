@@ -20,8 +20,6 @@ async function handler(
     },
   });
 
-  console.log(req.query);
-
   if (req.method === "GET") {
     const chatRoom = await client.chatRoom.findFirst({
       where: {

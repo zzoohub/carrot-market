@@ -66,7 +66,7 @@ const PrivateChat: NextPage = () => {
   const onValid = (form: ChatForm) => {
     if (newChatLoading) return;
     reset();
-    if (data) {
+    if (data && data?.chatRoom?.PrivateChats !== undefined) {
       mutate(
         (prev) =>
           prev &&
@@ -76,6 +76,24 @@ const PrivateChat: NextPage = () => {
               ...data?.chatRoom,
               PrivateChats: [
                 ...data?.chatRoom?.PrivateChats!,
+                {
+                  chat: form.chat,
+                  user: { avatar: user?.avatar, id: user?.id },
+                },
+              ],
+            },
+          } as any),
+        false
+      );
+    } else if (data && data?.chatRoom?.PrivateChats === undefined) {
+      mutate(
+        (prev) =>
+          prev &&
+          ({
+            ...prev,
+            chatRoom: {
+              ...data?.chatRoom,
+              PrivateChats: [
                 {
                   chat: form.chat,
                   user: { avatar: user?.avatar, id: user?.id },
@@ -113,13 +131,13 @@ const PrivateChat: NextPage = () => {
           </div>
         </div>
         <div className="flex flex-col justify-end py-10 pb-16 h-[65vh] overflow-y-auto  px-4 mt-2  rounded-md bg-slate-200">
-          {data?.chatRoom
+          {data?.chatRoom?.PrivateChats[0] !== undefined
             ? data?.chatRoom?.PrivateChats?.map((chat) => (
-                <div key={chat.id}>
+                <div key={chat?.id}>
                   <UserMessage
-                    message={chat.chat}
-                    reversed={chat.user.id === user?.id}
-                    imgId={chat.user.avatar!}
+                    message={chat?.chat}
+                    reversed={chat?.user?.id === user?.id}
+                    imgId={chat?.user?.avatar!}
                   ></UserMessage>
                 </div>
               ))

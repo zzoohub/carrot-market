@@ -136,11 +136,13 @@ model Stream {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  title String
   name        String
   description String    @db.MediumText
   price       Int
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
+  live Boolean @default(true)
   LiveChats    LiveChat[]
   streamId String
   streamUrl String

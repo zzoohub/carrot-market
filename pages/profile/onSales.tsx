@@ -9,17 +9,17 @@ interface ProductWithCount extends Product {
     Favorites: number;
   };
 }
-interface OnSailsResponse {
+interface OnSalesResponse {
   ok: boolean;
-  onSails: ProductWithCount[];
+  onSales: ProductWithCount[];
 }
 
 const Sold: NextPage = () => {
-  const { data } = useSWR<OnSailsResponse>(`/api/users/me/onSails`);
+  const { data } = useSWR<OnSalesResponse>(`/api/users/me/onSales`);
   return (
     <Layout title="판매중인 상품" canGoBack>
       <div className="flex flex-col divide-y-[1px]">
-        {data?.onSails.map((product) => (
+        {data?.onSales.map((product) => (
           <Item
             key={product.id}
             id={product.id}

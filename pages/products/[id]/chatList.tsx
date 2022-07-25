@@ -88,7 +88,7 @@ const chatList: NextPage = () => {
 };
 
 function getHourRemainder(time: any): any {
-  return Math.floor(((Date.now() - time) / 1000 / 3600) % 24);
+  return (((Date.now() - time) / 1000 / 60 / 60) % 24).toFixed();
 }
 function getDateRemainder(time: any): any {
   return Math.floor((Date.now() - time) / 1000 / 60 / 60 / 24);

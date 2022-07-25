@@ -9,25 +9,18 @@ async function handler(
 ) {
   const {
     session: { user },
+    query: { id },
   } = req;
 
-  const onSails = await client.product.findMany({
+  const streams = await client.stream.findMany({
     where: {
-      userId: user?.id,
-      traded: false,
-    },
-    include: {
-      _count: {
-        select: {
-          Favorites: true,
-        },
-      },
+      userId: +id,
     },
   });
 
-  return res.json({
+  res.json({
     ok: true,
-    onSails,
+    streams,
   });
 }
 

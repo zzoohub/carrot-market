@@ -14,6 +14,9 @@ async function handler(
     const streams = await client.stream.findMany({
       take: 10,
       skip: +page * 10,
+      where: {
+        live: true,
+      },
     });
     res.json({
       ok: true,
@@ -22,7 +25,7 @@ async function handler(
   } else if (req.method === "POST") {
     const {
       session: { user },
-      body: { name, price, description },
+      body: { name, price, description, title },
     } = req;
 
     const {
@@ -48,6 +51,7 @@ async function handler(
         name,
         price,
         description,
+        title,
         user: {
           connect: {
             id: user?.id,

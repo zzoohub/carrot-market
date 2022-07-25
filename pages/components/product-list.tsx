@@ -3,7 +3,7 @@ import useSWR from "swr";
 import Item from "./item";
 
 interface ProductListProps {
-  kind: "sales" | "purchases" | "favorites" | "onSails";
+  kind: "sales" | "purchases" | "favorites" | "onSales";
 }
 
 export default function ProductList({ kind }: ProductListProps) {

@@ -4,7 +4,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 interface InputProps {
   name: string;
   label: string;
-  kind: "text" | "price" | "phone";
+  kind: "text" | "price" | "phone" | "title";
   type: string;
   required?: boolean;
   register: UseFormRegisterReturn;
@@ -49,7 +49,7 @@ export default function Input({
           </label>
           <div className="rounded-md relative flex  items-center shadow-sm">
             <div className="absolute left-0 pointer-events-none pl-3 flex items-center justify-center">
-              <span className="text-gray-500 text-sm">$</span>
+              <span className="text-gray-500 text-sm">￦</span>
             </div>
             <input
               id={name}
@@ -60,7 +60,7 @@ export default function Input({
               {...register}
             />
             <div className="absolute right-0 pointer-events-none pr-3 flex items-center">
-              <span className="text-gray-500">USD</span>
+              <span className="text-gray-500">KRW</span>
             </div>
           </div>
         </div>

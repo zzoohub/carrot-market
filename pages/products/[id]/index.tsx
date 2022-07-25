@@ -75,10 +75,10 @@ const ItemDetail: NextPage = () => {
             </div>
           </div>
           <div className="mt-3">
-            <h1 className="text-sm text-gray-600 font-medium select-none">
+            <h1 className="text-sm text-slate-600 font-bold select-none">
               {data?.product?.name}
             </h1>
-            <p className="text-[22px] font-bold select-none">
+            <p className="text-[20px] font-bold select-none text-slate-800">
               ${data?.product?.price}
             </p>
             <p className="mt-2 text-[12px] text-justify">
