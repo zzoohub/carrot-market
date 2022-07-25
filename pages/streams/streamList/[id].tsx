@@ -17,7 +17,7 @@ const StreamList: NextPage = () => {
     router.query.id ? `/api/streams/streamList/${router.query.id}` : null
   );
   return (
-    <Layout title="Stream List" canGoBack>
+    <Layout seoTitle="Stream List" title="Stream List" canGoBack>
       <div className="flex flex-col divide-y">
         {data?.streams?.map((stream) => (
           <Link href={`/streams/${stream.id}`} key={stream.id}>

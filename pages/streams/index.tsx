@@ -19,7 +19,7 @@ const Live: NextPage = () => {
     setPageNum(+pageBtn?.target.innerText - 1);
   };
   return (
-    <Layout title="Streams" hasTabBar>
+    <Layout seoTitle="Streams" title="Streams" hasTabBar>
       <div className="py-6 divide-y-[1px] space-y-4">
         {data?.streams?.map((stream) => (
           <div className="pt-4  px-4" key={stream.id}>

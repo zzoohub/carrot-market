@@ -43,7 +43,7 @@ const Write: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout title="Post upload" canGoBack>
+    <Layout seoTitle="Post Upload" title="Post upload" canGoBack>
       <form onSubmit={handleSubmit(postUpload)} className="px-4 py-10">
         <span className="absolute top-6 text-red-500 font-semibold text-sm">
           {errors ? errors.question?.message : ""}

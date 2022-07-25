@@ -82,7 +82,7 @@ const EditProfile: NextPage = () => {
   }, [watchingAvatar]);
 
   return (
-    <Layout title="Edit profile" canGoBack>
+    <Layout seoTitle="Edit Profile" title="Edit profile" canGoBack>
       {customLoading ? <Loading /> : null}
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">

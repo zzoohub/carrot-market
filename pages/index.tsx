@@ -17,11 +17,10 @@ interface ProductsResponse {
   products: ProductWithCount[];
 }
 const Home: NextPage = () => {
-  const { user } = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products");
 
   return (
-    <Layout title="Home" hasTabBar>
+    <Layout seoTitle="Home" title="Home" hasTabBar>
       <Head>
         <title>Home</title>
       </Head>

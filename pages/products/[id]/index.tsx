@@ -35,7 +35,7 @@ const ItemDetail: NextPage = () => {
     likeProduct({});
   };
   return (
-    <Layout title="Item" canGoBack>
+    <Layout seoTitle="Product" title="Product" canGoBack>
       <div>
         <div className="px-4 py-10">
           <div className="relative w-full h-96 bg-gray-500">

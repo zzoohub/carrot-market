@@ -17,7 +17,7 @@ interface OnSalesResponse {
 const Sold: NextPage = () => {
   const { data } = useSWR<OnSalesResponse>(`/api/users/me/onSales`);
   return (
-    <Layout title="판매중인 상품" canGoBack>
+    <Layout seoTitle="On Sales" title="판매중인 상품" canGoBack>
       <div className="flex flex-col divide-y-[1px]">
         {data?.onSales.map((product) => (
           <Item

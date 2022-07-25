@@ -30,7 +30,7 @@ const Community: NextPage = () => {
   const router = useRouter();
 
   return (
-    <Layout title="Comunity" hasTabBar>
+    <Layout seoTitle="Comunity" title="Comunity" hasTabBar>
       {data?.posts ? (
         <div className="px-4 py-10 relativ max-w-lg">
           {data?.posts?.map((post) => (

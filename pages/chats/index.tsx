@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Layout from "../components/layout";
 const Chats: NextPage = () => {
   return (
-    <Layout title="Chats" hasTabBar>
+    <Layout seoTitle="Chats" title="Chats" hasTabBar>
       <div className="divide-y-[1px]">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((index, i) => (
           <div key={index} className="px-4 py-5 space-y-5">

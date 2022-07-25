@@ -45,9 +45,6 @@ const DetailStream: NextPage = () => {
       refreshInterval: 1000,
     }
   );
-  const { data: recordedData } = useSWR(
-    `https://dash.cloudflare.com/api/v4/accounts/${process.env.CF_ID}/stream/live_inputs/${data?.stream?.streamId}/videos`
-  );
 
   const { register, handleSubmit, reset } = useForm<MessageType>();
   const [createMessage, { loading, data: messageData }] =
@@ -95,17 +92,12 @@ const DetailStream: NextPage = () => {
     router.push("/streams");
   }
 
-  console.log(recordedData);
   return (
-    <Layout title="Stream" canGoBack>
+    <Layout seoTitle="Stream" title="Stream" canGoBack>
       <div className="py-10 px-4">
         {data?.stream?.streamId ? (
           <iframe
-            src={
-              data?.stream?.live
-                ? `https://iframe.videodelivery.net/${data?.stream?.streamId}`
-                : ``
-            }
+            src={`https://iframe.videodelivery.net/${data?.stream?.streamId}`}
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
             allowFullScreen={true}
             className="w-full rounded-md shadow-sm  aspect-video"

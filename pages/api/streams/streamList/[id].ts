@@ -12,6 +12,8 @@ async function handler(
     query: { id },
   } = req;
 
+  console.log(id);
+
   const streams = await client.stream.findMany({
     where: {
       userId: +id,

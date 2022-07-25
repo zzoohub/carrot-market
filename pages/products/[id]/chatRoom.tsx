@@ -108,7 +108,7 @@ const PrivateChat: NextPage = () => {
   };
 
   return (
-    <Layout title="Private Chat" canGoBack>
+    <Layout seoTitle="Private Chat" title="Private Chat" canGoBack>
       <div className="relative h-max w-full px-2">
         <div className="h-[18vh] flex pt-2">
           <div className="relative w-48 aspect-square rounded-md overflow-hidden mr-2">

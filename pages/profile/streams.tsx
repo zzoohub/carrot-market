@@ -16,8 +16,10 @@ const Sold: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<Streams>(`/api/streams/streamList/${user?.id}`);
 
+  console.log(data);
+
   return (
-    <Layout title="판매중인 상품" canGoBack>
+    <Layout seoTitle="On Sails" title="판매중인 상품" canGoBack>
       <div className="flex flex-col divide-y-[1px]">
         {data?.streams?.map((stream) => (
           <Link href={`/streams/${stream.id}`} key={stream.id}>
@@ -26,7 +28,7 @@ const Sold: NextPage = () => {
                 <Image
                   className="object-cover"
                   layout="fill"
-                  src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg`}
+                  src={`https://videodelivery.net/${stream.streamId}/thumbnails/thumbnail.jpg?time=68s&height=270`}
                 ></Image>
               </div>
               <div className="flex flex-col w-[75%] justify-between py-1 text-slate-700">

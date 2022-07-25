@@ -24,7 +24,7 @@ const chatList: NextPage = () => {
   );
 
   return (
-    <Layout title="받은 메세지" canGoBack>
+    <Layout seoTitle="Received Message" title="받은 메세지" canGoBack>
       <div className="divide-y">
         {data?.chatList.map((chatRoom) => (
           <Link

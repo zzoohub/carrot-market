@@ -60,7 +60,7 @@ const Upload: NextPage = () => {
     }
   }, [data]);
   return (
-    <Layout title="Upload product" canGoBack>
+    <Layout seoTitle="Upload Poduct" title="Upload product" canGoBack>
       {customLoading ? <Loading /> : null}
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 space-y-5 py-10">
         <div id="uploadImg" className="relative">

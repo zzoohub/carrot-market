@@ -4,7 +4,7 @@ import ProductList from "../components/product-list";
 
 const Liked: NextPage = () => {
   return (
-    <Layout title="Liked items" canGoBack>
+    <Layout seoTitle="Liked Items" title="Liked items" canGoBack>
       <div className="flex flex-col divide-y-[1px]">
         <ProductList kind="favorites"></ProductList>
       </div>
