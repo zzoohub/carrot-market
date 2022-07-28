@@ -1,4 +1,4 @@
-import { ChatRoom, PrivateChat, User } from "@prisma/client";
+import { ChatRoom, User } from "@prisma/client";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +16,7 @@ interface ChatListResponse {
   chatList: ChatRoomWithDetail[];
 }
 
-const chatList: NextPage = () => {
+const ChatList: NextPage = () => {
   const router = useRouter();
 
   const { data } = useSWR<ChatListResponse>(
@@ -94,4 +94,4 @@ function getDateRemainder(time: any): any {
   return Math.floor((Date.now() - time) / 1000 / 60 / 60 / 24);
 }
 
-export default chatList;
+export default ChatList;

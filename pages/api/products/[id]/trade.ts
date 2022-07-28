@@ -13,12 +13,12 @@ async function handler(
   } = req;
 
   const product = await client.product.findUnique({
-    where: { id: +id },
+    where: { id: +id! },
   });
 
   if (req.method === "POST") {
     await client.product.update({
-      where: { id: +id },
+      where: { id: +id! },
       data: {
         traded: true,
       },

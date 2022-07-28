@@ -79,7 +79,7 @@ const ItemDetail: NextPage = () => {
               {data?.product?.name}
             </h1>
             <p className="text-[20px] font-bold select-none text-slate-800">
-              ${data?.product?.price}
+              {data?.product?.price}원
             </p>
             <p className="mt-2 text-[12px] text-justify">
               {data?.product?.description}
@@ -160,7 +160,7 @@ const ItemDetail: NextPage = () => {
                   <h3 className="mt-1 text-sm cursor-pointer">
                     {product.name}
                   </h3>
-                  <p className="text-xl font-bold">${product.price}</p>
+                  <p className="text-xl font-bold">{product.price}원</p>
                 </div>
               </Link>
             ))}

@@ -14,7 +14,7 @@ async function handler(
 
   const aleadyExist = await client.wondering.findFirst({
     where: {
-      postId: +id.toString(),
+      postId: +id?.toString()!,
       userId: user?.id,
     },
     select: {
@@ -37,7 +37,7 @@ async function handler(
         },
         post: {
           connect: {
-            id: +id.toString(),
+            id: +id?.toString()!,
           },
         },
       },

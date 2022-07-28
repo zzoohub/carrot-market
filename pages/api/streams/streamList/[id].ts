@@ -16,7 +16,7 @@ async function handler(
 
   const streams = await client.stream.findMany({
     where: {
-      userId: +id,
+      userId: +id!,
     },
   });
 

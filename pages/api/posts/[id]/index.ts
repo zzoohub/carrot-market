@@ -14,7 +14,7 @@ async function handler(
 
   const post = await client.post.findUnique({
     where: {
-      id: +id.toString(),
+      id: +id?.toString()!,
     },
     include: {
       user: {
@@ -49,7 +49,7 @@ async function handler(
   const isWondering = Boolean(
     await client.wondering.findFirst({
       where: {
-        postId: +id.toString(),
+        postId: +id?.toString()!,
         userId: user?.id,
       },
       select: {

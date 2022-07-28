@@ -13,7 +13,7 @@ async function handler(
     } = req;
     const streams = await client.stream.findMany({
       take: 10,
-      skip: +page * 10,
+      skip: +page! * 10,
       where: {
         live: true,
       },

@@ -14,7 +14,7 @@ async function handler(
 
   const aleadyExist = await client.favorite.findFirst({
     where: {
-      productId: +id,
+      productId: +id!,
       userId: user?.id,
     },
   });
@@ -34,7 +34,7 @@ async function handler(
         },
         product: {
           connect: {
-            id: +id,
+            id: +id!,
           },
         },
       },

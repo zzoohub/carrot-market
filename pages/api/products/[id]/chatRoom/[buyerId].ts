@@ -16,7 +16,7 @@ async function handler(
   } = req;
   const product = await client.product.findUnique({
     where: {
-      id: +id,
+      id: +id!,
     },
   });
 

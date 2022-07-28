@@ -14,7 +14,7 @@ async function handler(
   if (req.method === "GET") {
     const stream = await client.stream.findUnique({
       where: {
-        id: +id.toString(),
+        id: +id?.toString()!,
       },
       include: {
         LiveChats: {
@@ -52,7 +52,7 @@ async function handler(
   if (req.method === "POST") {
     await client.stream.update({
       where: {
-        id: +id,
+        id: +id!,
       },
       data: {
         live: false,

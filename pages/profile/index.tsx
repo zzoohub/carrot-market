@@ -1,11 +1,14 @@
 import { Review, User } from "@prisma/client";
-import { NextPage } from "next";
+import { NextPage, NextPageContext } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import useUser from "../../libs/client/useUser";
 import { cls, imgUrl } from "../../libs/client/utils";
+import { withSsrSession } from "../../libs/server/withSession";
 import Layout from "../components/layout";
+import client from "../../libs/server/client";
+import FloatingButton from "../components/floating-button";
 
 const Profile: NextPage = () => {
   interface ReviewWithUser extends Review {
@@ -195,7 +198,44 @@ const Profile: NextPage = () => {
           </div>
         ))}
       </div>
+      <FloatingButton href="/faq">
+        <span className="text-sm">FAQ</span>
+      </FloatingButton>
     </Layout>
   );
 };
-export default Profile;
+
+const Page: NextPage<{ profile: User }> = ({ profile }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/users/me": {
+            ok: true,
+            profile,
+          },
+        },
+      }}
+    >
+      <Profile />
+    </SWRConfig>
+  );
+};
+
+export const getServerSideProps = withSsrSession(async function ({
+  req,
+}: NextPageContext) {
+  const profile = await client?.user.findUnique({
+    where: {
+      id: req?.session?.user?.id,
+    },
+  });
+
+  return {
+    props: {
+      profile: JSON.parse(JSON.stringify(profile)),
+    },
+  };
+});
+
+export default Page;

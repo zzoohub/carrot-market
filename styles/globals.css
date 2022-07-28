@@ -5,3 +5,7 @@
 body {
   background-color: #333;
 }
+
+.faq-detail-content h3 {
+  @apply text-slate-800 text-sm;
+}

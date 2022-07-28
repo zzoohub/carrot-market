@@ -1,12 +1,10 @@
 import { Post, User } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import useCoords from "../../libs/client/useCoords";
 import FloatingButton from "../components/floating-button";
 import Layout from "../components/layout";
 import Loading from "../components/loading";
+import client from "../../libs/server/client";
 
 interface PostWithUser extends Post {
   user: User;
@@ -16,24 +14,22 @@ interface PostWithUser extends Post {
   };
 }
 interface PostsResponse {
-  ok: boolean;
   posts: PostWithUser[];
 }
 
-const Community: NextPage = () => {
-  const { latitude, longitude } = useCoords();
-  const { data } = useSWR<PostsResponse>(
-    latitude && longitude
-      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
-      : null
-  );
-  const router = useRouter();
+const Community: NextPage<PostsResponse> = ({ posts }) => {
+  // const { latitude, longitude } = useCoords();
+  // const { data } = useSWR<PostsResponse>(
+  //   latitude && longitude
+  //     ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+  //     : null
+  // );
 
   return (
     <Layout seoTitle="Comunity" title="Comunity" hasTabBar>
-      {data?.posts ? (
+      {posts ? (
         <div className="px-4 py-10 relativ max-w-lg">
-          {data?.posts?.map((post) => (
+          {posts?.map((post) => (
             <Link href={`/comunity/${post?.id}`} key={post?.id}>
               <a className="mb-5 block">
                 <span className="bg-gray-200 px-2 py-1 text-xs rounded-full">
@@ -45,7 +41,7 @@ const Community: NextPage = () => {
                 </div>
                 <div className="flex justify-between text-xs py-2 border-b border-dashed mt-3">
                   <span>{post?.user?.name}</span>
-                  <span>{String(post?.createdAt)}</span>
+                  <span>{String(post?.createdAt.toString().slice(0, 10))}</span>
                 </div>
                 <div className="flex py-2 border-b-2">
                   <span className="flex items-center text-xs mr-5">
@@ -112,4 +108,18 @@ const Community: NextPage = () => {
   );
 };
 
+export async function getStaticProps() {
+  console.log("정적으로 생성중");
+  const posts = await client?.post.findMany({
+    include: {
+      user: true,
+      _count: true,
+    },
+  });
+  return {
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+  };
+}
 export default Community;
