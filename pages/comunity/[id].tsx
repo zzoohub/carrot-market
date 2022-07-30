@@ -5,34 +5,36 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import useMutation from "../../libs/client/useMutation";
 import { cls, imgUrl } from "../../libs/client/utils";
 import Button from "../components/button";
 import Layout from "../components/layout";
 import Textarea from "../components/Textarea";
+import client from "../../libs/server/client";
+import useUser from "../../libs/client/useUser";
+
+interface AnswerWithUser extends Answer {
+  user: User;
+}
+interface PostWithUser extends Post {
+  user: User;
+  Answers: AnswerWithUser[];
+  _count: {
+    Answers: number;
+    Wonderings: number;
+  };
+}
+interface PostDetailResponse {
+  ok: boolean;
+  post: PostWithUser;
+  isWondering: boolean;
+}
+interface AnswerForm {
+  answer: string;
+}
 
 const CommunityPostDetail: NextPage = () => {
-  interface AnswerWithUser extends Answer {
-    user: User;
-  }
-  interface PostWithUser extends Post {
-    user: User;
-    Answers: AnswerWithUser[];
-    _count: {
-      Answers: number;
-      Wonderings: number;
-    };
-  }
-  interface PostDetailResponse {
-    ok: boolean;
-    post: PostWithUser;
-    isWondering: boolean;
-  }
-  interface AnswerForm {
-    answer: string;
-  }
-
   const router = useRouter();
   const { data: postData, mutate } = useSWR<PostDetailResponse>(
     router.query.id ? `/api/posts/${router.query.id}` : null
@@ -191,20 +193,6 @@ const CommunityPostDetail: NextPage = () => {
       </div>
     </Layout>
   );
-};
-
-export const getStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  console.log(ctx);
-  return {
-    props: {},
-  };
 };
 
 export default CommunityPostDetail;

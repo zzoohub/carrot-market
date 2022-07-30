@@ -5,6 +5,7 @@ import Input from "./components/input";
 import { FieldError, useForm } from "react-hook-form";
 import useMutation from "../libs/client/useMutation";
 import { useRouter } from "next/router";
+import { Token } from "@prisma/client";
 
 export default function Enter() {
   interface LoginForm {
@@ -14,9 +15,9 @@ export default function Enter() {
   interface TokenForm {
     token: number;
   }
-
-  interface EnterMutationResult {
+  interface ConfirmResponse {
     ok: boolean;
+    token: Token;
   }
 
   const {
@@ -28,8 +29,7 @@ export default function Enter() {
   const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
     useForm<TokenForm>();
 
-  const [enter, { loading, data, error }] =
-    useMutation<EnterMutationResult>(`/api/users/enter`);
+  const [enter, { data }] = useMutation<ConfirmResponse>(`/api/users/enter`);
   const [tokenConfirm, { loading: tokenLoading, data: tokenData }] =
     useMutation(`/api/users/confirm`);
 
@@ -79,6 +79,7 @@ export default function Enter() {
               kind="text"
               label="Token confirm"
               type="number"
+              placeholder={data?.token?.payload}
             ></Input>
 
             <span

@@ -52,7 +52,7 @@ async function handler(
     // console.log(email);
   }
   console.log(token);
-  return res.json({ ok: true });
+  return res.json({ ok: true, token });
 }
 
 export default withHandler({ methods: ["POST"], handler, isPrivate: false });
