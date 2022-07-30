@@ -39,13 +39,13 @@ const FaqDetail: NextPage<FaqDetailInterface> = ({ data, content, slug }) => {
 };
 
 export function getStaticPaths() {
-  const files = readdirSync("./markdown/faq").map((file) => {
-    const [name, extension] = file.split(".");
-    return { params: { slug: name } };
-  });
+  // const files = readdirSync("./markdown/faq").map((file) => {
+  //   const [name, extension] = file.split(".");
+  //   return { params: { slug: name } };
+  // });
   return {
-    paths: files,
-    fallback: false,
+    paths: [],
+    fallback: "blocking",
   };
 }
 

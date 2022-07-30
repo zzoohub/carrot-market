@@ -1,5 +1,5 @@
 import { Answer, Post, User } from "@prisma/client";
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -191,6 +191,20 @@ const CommunityPostDetail: NextPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  console.log(ctx);
+  return {
+    props: {},
+  };
 };
 
 export default CommunityPostDetail;

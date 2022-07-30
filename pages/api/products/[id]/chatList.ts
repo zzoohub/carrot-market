@@ -26,6 +26,7 @@ async function handler(
       where: {
         sellerId: user?.id,
         product: {
+          id: +id!,
           traded: false,
         },
       },
