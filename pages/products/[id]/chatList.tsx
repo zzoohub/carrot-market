@@ -72,6 +72,7 @@ const ChatList: NextPage = () => {
                       ).getTime()
                     ) +
                     "일" +
+                    "_" +
                     getHourRemainder(
                       new Date(
                         chatRoom.createdAt.toString().slice(0, 10)
@@ -88,7 +89,7 @@ const ChatList: NextPage = () => {
 };
 
 function getHourRemainder(time: any): any {
-  return (((Date.now() - time) / 1000 / 60 / 60) % 24).toFixed();
+  return Math.floor(((Date.now() - time) / 1000 / 60 / 60) % 24);
 }
 function getDateRemainder(time: any): any {
   return Math.floor((Date.now() - time) / 1000 / 60 / 60 / 24);

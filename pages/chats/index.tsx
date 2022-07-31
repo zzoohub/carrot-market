@@ -35,7 +35,33 @@ const Chats: NextPage = () => {
                   <span className="text-sm block font-medium text-gray-700">
                     {chatRoom.seller.name}
                   </span>
-                  <span className="text-xs text-gray-500 block ">2시간 전</span>
+                  <span className="text-xs text-slate-500">
+                    {Number(
+                      getDateRemainder(
+                        new Date(
+                          chatRoom.createdAt.toString().slice(0, 10)
+                        ).getTime()
+                      )
+                    ) < 1
+                      ? getHourRemainder(
+                          new Date(
+                            chatRoom.createdAt.toString().slice(0, 10)
+                          ).getTime()
+                        ) + "시간 전"
+                      : getDateRemainder(
+                          new Date(
+                            chatRoom.createdAt.toString().slice(0, 10)
+                          ).getTime()
+                        ) +
+                        "일" +
+                        "_" +
+                        getHourRemainder(
+                          new Date(
+                            chatRoom.createdAt.toString().slice(0, 10)
+                          ).getTime()
+                        ) +
+                        "시간 전"}
+                  </span>
                   <p className="text-gray-700 mt-2">
                     {chatRoom.PrivateChats
                       ? chatRoom.PrivateChats.at(-1)?.chat
@@ -50,5 +76,12 @@ const Chats: NextPage = () => {
     </Layout>
   );
 };
+
+function getHourRemainder(time: any): any {
+  return Math.floor(((Date.now() - time) / 1000 / 60 / 60) % 24);
+}
+function getDateRemainder(time: any): any {
+  return Math.floor((Date.now() - time) / 1000 / 60 / 60 / 24);
+}
 
 export default Chats;
