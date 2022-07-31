@@ -156,7 +156,7 @@ const PrivateChat: NextPage = () => {
           </form>
         </div>
 
-        {!router.query.buyerId ? (
+        {router.query.buyerId === user?.id + "" ? (
           <span
             onClick={() => {
               setPopup(true);
