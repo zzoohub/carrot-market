@@ -29,7 +29,8 @@ export default function Enter() {
   const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
     useForm<TokenForm>();
 
-  const [enter, { data }] = useMutation<ConfirmResponse>(`/api/users/enter`);
+  const [enter, { data, loading }] =
+    useMutation<ConfirmResponse>(`/api/users/enter`);
   const [tokenConfirm, { loading: tokenLoading, data: tokenData }] =
     useMutation(`/api/users/confirm`);
 
@@ -170,7 +171,9 @@ export default function Enter() {
               </span>
               <Button
                 text={
-                  method === "email"
+                  loading
+                    ? "Loading..."
+                    : method === "email"
                     ? "Get login link"
                     : "Get one-time password"
                 }
