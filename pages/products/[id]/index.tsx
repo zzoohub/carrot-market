@@ -1,8 +1,9 @@
 import { Product, User } from "@prisma/client";
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import useSWR from "swr";
 import useMutation from "../../../libs/client/useMutation";
 import useUser from "../../../libs/client/useUser";
@@ -29,16 +30,33 @@ const ItemDetail: NextPage = () => {
   const [likeProduct] = useMutation(
     `/api/products/${router.query.id}/favorite`
   );
+  const [deleteProduct, { data: deleteData }] = useMutation(
+    `/api/products/${router.query.id}/delete`
+  );
+
   const onFavClick = () => {
     if (!data) return;
     mutate({ ...data, isLiked: !data.isLiked }, false);
     likeProduct({});
   };
+
+  const unload = () => {
+    if (confirm("상품을 삭제하시겠습까?")) {
+      deleteProduct({});
+    }
+  };
+
+  useEffect(() => {
+    if (deleteData?.ok) {
+      router.push("/");
+    }
+  }, [deleteData]);
+
   return (
-    <Layout seoTitle="Product" title="Product" canGoBack>
+    <Layout seoTitle="Product" title={data?.product?.name} canGoBack>
       <div>
         <div className="px-4 py-10">
-          <div className="relative w-full h-96 bg-gray-500">
+          <div className="relative w-full h-96 bg-gray-500 rounded-sm overflow-hidden">
             <Image
               src={imgUrl(data?.product?.image, "public")}
               layout="fill"
@@ -63,7 +81,7 @@ const ItemDetail: NextPage = () => {
               <p className="font-bold text-sm">{data?.product?.user?.name}</p>
               <Link
                 href={
-                  user?.id === data?.product.userId
+                  user?.id === data?.product?.userId
                     ? `/profile`
                     : `/users/profile/${data?.product?.user?.id}`
                 }
@@ -74,20 +92,28 @@ const ItemDetail: NextPage = () => {
               </Link>
             </div>
           </div>
-          <div className="mt-3">
-            <h1 className="text-sm text-slate-600 font-bold select-none">
-              {data?.product?.name}
-            </h1>
-            <p className="text-[20px] font-bold select-none text-slate-800">
+          <div className="mt-4">
+            <div className="flex justify-between">
+              <h1 className="text-sm text-slate-600 font-bold select-none">
+                {data?.product?.name}
+              </h1>
+              <button
+                className="border border-zinc-800 text-black-500 text-zinc-800 text-xs px-1 rounded-sm hover:font-bold"
+                onClick={unload}
+              >
+                상품 내리기
+              </button>
+            </div>
+            <p className="text-[20px] font-bold select-none text-slate-800 mt-2">
               {data?.product?.price}원
             </p>
             <p className="mt-2 text-[12px] text-justify">
               {data?.product?.description}
             </p>
             <div className="flex items-center justify-between mt-3">
-              {user?.id !== data?.product.userId ? (
+              {user?.id !== data?.product?.userId ? (
                 <>
-                  <Link href={`/products/${data?.product.id}/chatRoom`}>
+                  <Link href={`/products/${data?.product?.id}/chatRoom`}>
                     <a className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none text-center">
                       Talk to Seller
                     </a>
@@ -135,7 +161,7 @@ const ItemDetail: NextPage = () => {
                 </>
               ) : (
                 <Link href={`/products/${data?.product.id}/chatList`}>
-                  <a className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none text-center">
+                  <a className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-sm shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none text-center">
                     받은 문의 메세지
                   </a>
                 </Link>
@@ -143,29 +169,37 @@ const ItemDetail: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="p-5">
-          <h2 className="text-center font-semibold text-lg">Similar items</h2>
-          <div className="grid grid-cols-2 mt-2 gap-5">
-            {data?.relatedProduct?.map((product) => (
-              <Link key={product.id} href={`/products/${product.id}`}>
-                <div className="select-none">
-                  <div className="relative w-full aspect-square cursor-pointer rounded-sm">
-                    <Image
-                      src={imgUrl(product?.image, "public")}
-                      layout="fill"
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                  <h3 className="mt-1 text-sm cursor-pointer">
-                    {product.name}
-                  </h3>
-                  <p className="text-xl font-bold">{product.price}원</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+
+        {data?.relatedProduct[0] ? (
+          <>
+            {" "}
+            <div className="p-5">
+              <h2 className="text-center font-semibold text-lg">
+                Similar items
+              </h2>
+              <div className="grid grid-cols-2 mt-2 gap-5">
+                {data?.relatedProduct?.map((product) => (
+                  <Link key={product.id} href={`/products/${product.id}`}>
+                    <div className="select-none">
+                      <div className="relative w-full aspect-square cursor-pointer rounded-sm">
+                        <Image
+                          src={imgUrl(product?.image, "public")}
+                          layout="fill"
+                          className="object-cover"
+                          priority
+                        />
+                      </div>
+                      <h3 className="mt-1 text-sm cursor-pointer">
+                        {product.name}
+                      </h3>
+                      <p className="text-xl font-bold">{product.price}원</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : null}
       </div>
     </Layout>
   );

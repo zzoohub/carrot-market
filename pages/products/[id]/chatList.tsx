@@ -36,16 +36,16 @@ const ChatList: NextPage = () => {
           >
             <div className="flex justify-between px-4 py-5 hover:bg-slate-50 cursor-pointer">
               <div className="flex">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 bg-zinc-200">
                   <Image
                     layout="fill"
-                    src={imgUrl(chatRoom.buyer.avatar, "avatar")}
+                    src={imgUrl(chatRoom?.buyer?.avatar, "avatar")}
                     className="object-cover"
                   ></Image>
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="font-bold">{chatRoom.buyer.name}</h3>
-                  <span className="text-sm mt-1">
+                  <h3 className="font-bold text-sm">{chatRoom.buyer.name}</h3>
+                  <span className="mt-1 text-xs">
                     {chatRoom.PrivateChats[0] !== undefined
                       ? chatRoom.PrivateChats[chatRoom.PrivateChats.length - 1]
                           .chat
@@ -72,7 +72,7 @@ const ChatList: NextPage = () => {
                       ).getTime()
                     ) +
                     "일" +
-                    "_" +
+                    " " +
                     getHourRemainder(
                       new Date(
                         chatRoom.createdAt.toString().slice(0, 10)

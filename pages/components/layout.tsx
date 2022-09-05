@@ -52,7 +52,7 @@ export default function Layout({
             </svg>
           </div>
         ) : null}
-        {title}
+        <h2 className="text-[15px]">{title}</h2>
       </header>
       <main className={cls("pt-12", hasTabBar ? "mb-16" : "")}>{children}</main>
       {hasTabBar ? (

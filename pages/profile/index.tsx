@@ -22,58 +22,31 @@ const Profile: NextPage = () => {
   const { data } = useSWR<ReviewsResponse>(`/api/reviews`);
 
   return (
-    <Layout seoTitle="Profile" title="Profile" hasTabBar>
+    <Layout seoTitle="Profile" title="마이페이지" hasTabBar>
       <div className="py-10 px-4">
-        <div className="flex items-center space-x-3">
-          {user?.avatar ? (
-            <div className="relative w-16 h-16 rounded-full overflow-hidden">
-              <Image
-                layout="fill"
-                src={imgUrl(user?.avatar, "avatar")}
-                className="object-cover"
-              />
-            </div>
-          ) : (
-            <div className="w-16 h-16 bg-slate-500 rounded-full" />
-          )}
+        <div className="flex justify-center items-center space-x-3">
+          <div className="relative w-14 h-14 rounded-full overflow-hidden bg-slate-500">
+            <Image
+              layout="fill"
+              src={imgUrl(user?.avatar, "avatar")}
+              className="object-cover"
+            />
+          </div>
 
           <div className="flex flex-col">
-            <span className="font-medium text-gray-900">{user?.name}</span>
+            <span className="font-bold text-gray-900 text-sm">
+              {user?.name}
+            </span>
             <Link href={`/profile/edit`}>
-              <span className="text-sm text-gray-700 cursor-pointer">
+              <span className="text-[12px] text-gray-700 cursor-pointer mt-1">
                 Edit profile &rarr;
               </span>
             </Link>
           </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-y-5 justify-around">
-          <Link href="/profile/onSales">
-            <a>
-              <div className="flex flex-col items-center">
-                <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <span className="text-sm mt-2 font-medium text-gray-700">
-                  판매중
-                </span>
-              </div>
-            </a>
-          </Link>
-          <Link href="/profile/streams">
+        <div className="mt-6 grid grid-cols-3 justify-around">
+          {/* <Link href="/profile/streams">
             <a>
               <div className="flex flex-col items-center">
                 <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
@@ -91,10 +64,10 @@ const Profile: NextPage = () => {
                 </span>
               </div>
             </a>
-          </Link>
+          </Link> */}
           <Link href="/profile/sold">
             <a>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center py-3 hover:bg-slate-100">
                 <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
                   <svg
                     className="w-6 h-6"
@@ -113,7 +86,7 @@ const Profile: NextPage = () => {
           </Link>
           <Link href="/profile/bought">
             <a>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center py-3 hover:bg-slate-100">
                 <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
                   <svg
                     className="w-6 h-6"
@@ -138,7 +111,7 @@ const Profile: NextPage = () => {
           </Link>
           <Link href="/profile/liked">
             <a>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center py-3 hover:bg-slate-100">
                 <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
                   <svg
                     className="w-6 h-6"
@@ -157,6 +130,31 @@ const Profile: NextPage = () => {
                 </div>
                 <span className="text-sm mt-2 font-medium text-gray-700">
                   관심목록
+                </span>
+              </div>
+            </a>
+          </Link>
+          <Link href="/profile/onSales">
+            <a>
+              <div className="flex flex-col items-center py-3 hover:bg-slate-100">
+                <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <span className="text-sm mt-2 font-medium text-gray-700">
+                  판매중
                 </span>
               </div>
             </a>

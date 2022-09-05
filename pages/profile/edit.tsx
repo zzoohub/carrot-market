@@ -82,7 +82,7 @@ const EditProfile: NextPage = () => {
   }, [watchingAvatar]);
 
   return (
-    <Layout seoTitle="Edit Profile" title="Edit profile" canGoBack>
+    <Layout seoTitle="Edit Profile" title="프로필 수정" canGoBack>
       {customLoading ? <Loading /> : null}
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-5">
         <div className="flex items-center space-x-3">
@@ -102,7 +102,7 @@ const EditProfile: NextPage = () => {
             htmlFor="picture"
             className="bg-gray-100 cursor-pointer border border-gray-300 shadow-sm text-sm py-1 px-2 rounded-md font-medium hover:bg-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 text-gray-700"
           >
-            Change
+            변경
             <input
               {...register("avatar")}
               id="picture"
@@ -116,21 +116,21 @@ const EditProfile: NextPage = () => {
           register={register("name")}
           name="name"
           type="text"
-          label="Name"
+          label="닉네임"
           kind="text"
         ></Input>
         <Input
           register={register("email")}
           name="email"
           type="text"
-          label="Email address"
+          label="이메일"
           kind="text"
         ></Input>
         <Input
           register={register("phone")}
           type="number"
           name="phone"
-          label="Phone number"
+          label="전화번호"
           kind="phone"
         ></Input>
         {errors.formErrors ? (
@@ -140,7 +140,7 @@ const EditProfile: NextPage = () => {
         ) : null}
         <Button
           onClick={() => clearErrors()}
-          text={loading ? "Loading..." : "Update profile"}
+          text={loading ? "Loading..." : "엄데이트"}
         ></Button>
       </form>
     </Layout>

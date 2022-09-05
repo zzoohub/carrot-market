@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   const { data } = useSWR<ProductsResponse>("/api/products");
 
   return (
-    <Layout seoTitle="Home" title="Home" hasTabBar>
+    <Layout seoTitle="Home" title="땅근 마켓" hasTabBar>
       <Head>
         <title>Home</title>
       </Head>

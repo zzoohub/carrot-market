@@ -43,20 +43,24 @@ const Write: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout seoTitle="Post Upload" title="Post upload" canGoBack>
-      <form onSubmit={handleSubmit(postUpload)} className="px-4 py-10">
-        <span className="absolute top-6 text-red-500 font-semibold text-sm">
-          {errors ? errors.question?.message : ""}
+    <Layout seoTitle="Post Upload" title="게시글 업로드" canGoBack>
+      <form onSubmit={handleSubmit(postUpload)} className="px-4 py-6">
+        <span className="text-sm font-bold text-zinc-600">
+          게시글은 동네주민만 보게됩니다.
         </span>
+
         <Textarea
           register={register("question", {
             minLength: { value: 5, message: "minimum lenght is 5" },
           })}
           rows={4}
-          placeholder="Ask a Question!"
+          placeholder="아무 글을 작성하세요."
         ></Textarea>
-        <Button text={loading ? "...Loading" : "Reply"}></Button>
+        <Button text={loading ? "...Loading" : "업로드"}></Button>
       </form>
+      <span className="absolute top-6 text-red-500 font-semibold text-sm">
+        {errors ? errors.question?.message : ""}
+      </span>
     </Layout>
   );
 };

@@ -18,12 +18,14 @@ async function handler(
     include: {
       seller: {
         select: {
+          id: true,
           name: true,
           avatar: true,
         },
       },
       buyer: {
         select: {
+          id: true,
           name: true,
           avatar: true,
         },

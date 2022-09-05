@@ -19,7 +19,7 @@ const Sold: NextPage = () => {
   console.log(data);
 
   return (
-    <Layout seoTitle="On Sails" title="판매중인 상품" canGoBack>
+    <Layout seoTitle="On Sails" title="스트리밍 내역" canGoBack>
       <div className="flex flex-col divide-y-[1px]">
         {data?.streams?.map((stream) => (
           <Link href={`/streams/${stream.id}`} key={stream.id}>

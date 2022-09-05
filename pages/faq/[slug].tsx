@@ -1,4 +1,3 @@
-import { readdirSync } from "fs";
 import matter from "gray-matter";
 import { GetStaticProps, NextPage } from "next";
 import remarkHtml from "remark-html";
@@ -28,7 +27,7 @@ const FaqDetail: NextPage<FaqDetailInterface> = ({ data, content, slug }) => {
           <h2>{data.answer}</h2>
         </div>
 
-        <h3 className="mt-7 text-slate-700 font-bold">Detailed Answer</h3>
+        <h3 className="mt-7 text-slate-700 font-bold text-sm">세부 답변</h3>
         <div
           className="faq-detail-content w-full h-[70vh] bg-slate-100 rounded-sm p-2 mt-1"
           dangerouslySetInnerHTML={{ __html: content }}

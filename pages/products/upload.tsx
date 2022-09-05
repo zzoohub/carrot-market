@@ -61,9 +61,9 @@ const Upload: NextPage = () => {
     }
   }, [data]);
   return (
-    <Layout seoTitle="Upload Poduct" title="Upload product" canGoBack>
+    <Layout seoTitle="Upload Poduct" title="물건 등록" canGoBack>
       {customLoading ? <Loading /> : null}
-      <form onSubmit={handleSubmit(onSubmit)} className="px-4 space-y-5 py-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-4 space-y-2 py-10">
         <div id="uploadImg" className="relative">
           {photoPreview ? (
             <>
@@ -105,22 +105,22 @@ const Upload: NextPage = () => {
           type="text"
           name="name"
           kind="text"
-          label="Name"
+          label="물건 이름"
         ></Input>
         <Input
           register={register("price", { required: true, maxLength: 20 })}
           type="number"
           name="price"
           kind="price"
-          label="Price"
+          label="가격"
         ></Input>
         <Textarea
           rows={4}
-          label="Description"
+          label="설명"
           name="desc"
           register={register("description", { required: true, maxLength: 300 })}
         ></Textarea>
-        <Button text={loading ? "Loading..." : "Upload item"}></Button>
+        <Button text={loading ? "Loading..." : "물건 업로드"}></Button>
       </form>
     </Layout>
   );

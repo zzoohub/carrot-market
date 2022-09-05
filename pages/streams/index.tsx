@@ -16,8 +16,14 @@ const Live: NextPage = () => {
   // const { data } = useSWR<GetStreamsResponse>(`/api/streams?page=${pageNum}`);
 
   return (
-    <Layout seoTitle="Streams" title="Streams" hasTabBar>
-      <h3>스트리밍 서비스는 비용때문에 개발 중단됨</h3>
+    <Layout seoTitle="Streams" title="라이브 스트리밍" hasTabBar>
+      <h3 className="text-center mt-10 text-orange-500 font-bold text-[28px]">
+        Comming Soon~
+      </h3>
+      <p className="text-center text-sm font-bold text-zinc-800 mt-4">
+        스트리밍 서비스는 비용 문제로 개발이 잠시 중단되었습니다.
+        <br />더 좋은 서비스로 보답하겠습니다.
+      </p>
       {/* <div className="py-6 divide-y-[1px] space-y-4">
         {data?.streams?.map((stream) => (
           <div className="pt-4  px-4" key={stream.id}>

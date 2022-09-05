@@ -26,21 +26,21 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
   // );
 
   return (
-    <Layout seoTitle="Comunity" title="Comunity" hasTabBar>
+    <Layout seoTitle="Comunity" title="동네 커뮤니티" hasTabBar>
       {posts ? (
-        <div className="px-4 py-10 relativ max-w-lg">
+        <div className="px-4 py-6 relativ max-w-lg">
           {posts?.map((post) => (
             <Link href={`/comunity/${post?.id}`} key={post?.id}>
               <a className="mb-5 block">
-                <span className="bg-gray-200 px-2 py-1 text-xs rounded-full">
-                  동네질문
-                </span>
+                {/* <span className="bg-gray-200 px-2 py-1 text-xs rounded-full"></span> */}
                 <div className="mt-2 text-sm">
                   <span className="text-orange-500 font-medium mr-2">Q.</span>
                   {post?.question}
                 </div>
                 <div className="flex justify-between text-xs py-2 border-b border-dashed mt-3">
-                  <span>{post?.user?.name}</span>
+                  <span className="text-[10px]">
+                    작성자: {post?.user?.name}
+                  </span>
                   <span>{String(post?.createdAt.toString().slice(0, 10))}</span>
                 </div>
                 <div className="flex py-2 border-b-2">
