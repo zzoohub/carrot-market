@@ -13,14 +13,12 @@ interface GetStreamsResponse {
 }
 
 const Live: NextPage = () => {
-  const [pageNum, setPageNum] = useState(0);
-  const { data } = useSWR<GetStreamsResponse>(`/api/streams?page=${pageNum}`);
-  const movePage = (pageBtn: any) => {
-    setPageNum(+pageBtn?.target.innerText - 1);
-  };
+  // const { data } = useSWR<GetStreamsResponse>(`/api/streams?page=${pageNum}`);
+
   return (
     <Layout seoTitle="Streams" title="Streams" hasTabBar>
-      <div className="py-6 divide-y-[1px] space-y-4">
+      <h3>스트리밍 서비스는 비용때문에 개발 중단됨</h3>
+      {/* <div className="py-6 divide-y-[1px] space-y-4">
         {data?.streams?.map((stream) => (
           <div className="pt-4  px-4" key={stream.id}>
             <Link href={`/streams/${stream.id}`}>
@@ -48,21 +46,6 @@ const Live: NextPage = () => {
           </div>
         ))}
 
-        {/* <div className="flex w-[300px] m-auto left-0 right-0 justify-center border-transparent">
-          {[...Array.from(Array(data?.streams?.length).keys())].map((index) => (
-            <div
-              onClick={movePage}
-              className={cls(
-                "cursor-pointer font-bold text-lg w-8 h-8 flex justify-center items-center rounded-md",
-                pageNum === index ? "bg-orange-400" : ""
-              )}
-              key={index}
-            >
-              {index + 1}
-            </div>
-          ))}
-        </div> */}
-
         <FloatingButton href={`/streams/create`}>
           <svg
             className="w-6 h-6"
@@ -79,7 +62,7 @@ const Live: NextPage = () => {
             ></path>
           </svg>
         </FloatingButton>
-      </div>
+      </div> */}
     </Layout>
   );
 };

@@ -8,6 +8,7 @@ export default function () {
     ok: boolean;
     profile: User;
   }
+
   const { data, error } = useSWR<UserResponse>("/api/users/me");
   const router = useRouter();
 

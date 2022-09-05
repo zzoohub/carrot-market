@@ -24,6 +24,7 @@ interface UploadProductMutation {
 
 const Upload: NextPage = () => {
   const { user } = useUser();
+
   const [customLoading, setCustomLoading] = useState(false);
   const { register, handleSubmit, watch } = useForm<ProductType>();
   const [uploadProduct, { loading, data }] =
