@@ -53,7 +53,11 @@ const EditProfile: NextPage = () => {
       setCustomLoading(true);
       const { uploadURL } = await (await fetch("/api/files")).json();
       const form = new FormData();
-      form.append("file", avatar[0], user?.id + "");
+      form.append(
+        "file",
+        avatar[0],
+        `carrot_profileImg_userId=${String(user?.id)}`
+      );
       const {
         result: { id },
       } = await (await fetch(uploadURL, { method: "POST", body: form })).json();

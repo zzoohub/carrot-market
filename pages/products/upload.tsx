@@ -32,13 +32,18 @@ const Upload: NextPage = () => {
   const [photoPreview, setPhotoPreview] = useState("");
   const router = useRouter();
   const photoWatch = watch("photo");
+
   const onSubmit = async ({ name, price, description, photo }: ProductType) => {
     if (loading) return;
     if (photo && photo.length > 0 && user) {
       setCustomLoading(true);
       const { uploadURL } = await (await fetch("/api/files")).json();
       const form = new FormData();
-      form.append("file", photo[0], user?.id + "");
+      form.append(
+        "file",
+        photo[0],
+        `carrot_productImg_userId=${String(user?.id)}`
+      );
       const {
         result: { id },
       } = await (await fetch(uploadURL, { method: "POST", body: form })).json();

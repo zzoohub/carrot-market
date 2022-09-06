@@ -25,7 +25,7 @@ const Profile: NextPage = () => {
     <Layout seoTitle="Profile" title="마이페이지" hasTabBar>
       <div className="py-10 px-4">
         <div className="flex justify-center items-center space-x-3">
-          <div className="relative w-14 h-14 rounded-full overflow-hidden bg-slate-500">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden bg-slate-500">
             <Image
               layout="fill"
               src={imgUrl(user?.avatar, "avatar")}
@@ -34,7 +34,7 @@ const Profile: NextPage = () => {
           </div>
 
           <div className="flex flex-col">
-            <span className="font-bold text-gray-900 text-sm">
+            <span className="font-bold text-gray-900 text-md">
               {user?.name}
             </span>
             <Link href={`/profile/edit`}>
