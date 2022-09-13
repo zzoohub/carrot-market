@@ -45,6 +45,9 @@ async function handler(
           },
         },
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     });
     res.json({
       ok: true,
