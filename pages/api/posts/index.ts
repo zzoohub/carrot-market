@@ -1,17 +1,14 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../libs/server/withHandler";
-import { withApiSession } from "../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../libs/server/withHandler"
+import { withApiSession } from "../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === "POST") {
     const {
       session: { user },
       body: { question, latitude, longitude },
-    } = req;
+    } = req
     const post = await client.post.create({
       data: {
         question,
@@ -23,12 +20,12 @@ async function handler(
           },
         },
       },
-    });
-    await res.revalidate("/comunity");
+    })
+    await res.revalidate("/comunity")
     res.json({
       ok: true,
       post,
-    });
+    })
   }
 
   if (req.method === "GET") {
@@ -64,14 +61,12 @@ async function handler(
       //     lte: parsedLongitude + 0.01,
       //   },
       // },
-    });
+    })
     res.json({
       ok: true,
       posts,
-    });
+    })
   }
 }
 
-export default withApiSession(
-  withHandler({ methods: ["GET", "POST"], handler })
-);
+export default withApiSession(withHandler({ methods: ["GET", "POST"], handler }))

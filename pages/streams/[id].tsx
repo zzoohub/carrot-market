@@ -1,65 +1,59 @@
-import { Stream, LiveChat, User } from "@prisma/client";
-import type { NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import useSWR from "swr";
-import useMutation from "../../libs/client/useMutation";
-import useUser from "../../libs/client/useUser";
-import { imgUrl } from "../../libs/client/utils";
-import Layout from "../components/layout";
-import UserMessage from "../components/message";
+import { Stream, LiveChat, User } from "@prisma/client"
+import type { NextPage } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import useSWR from "swr"
+import useMutation from "../../libs/client/useMutation"
+import useUser from "../../libs/client/useUser"
+import { imgUrl } from "../../libs/client/utils"
+import Layout from "../components/layout"
+import UserMessage from "../components/message"
 
 interface StreamMessage {
-  liveMessage: string;
-  id: number;
+  liveMessage: string
+  id: number
   user: {
-    avatar?: string;
-    id: number;
-  };
+    avatar?: string
+    id: number
+  }
 }
 interface StreamWithMessages extends Stream {
-  LiveChats: StreamMessage[];
-  user: User;
+  LiveChats: StreamMessage[]
+  user: User
 }
 interface GetStreamResponse {
-  ok: boolean;
-  stream: StreamWithMessages;
+  ok: boolean
+  stream: StreamWithMessages
 }
 interface MessageType {
-  liveMessage: string;
+  liveMessage: string
 }
 interface CreateMessageResponse {
-  ok: boolean;
-  newMessage: LiveChat;
+  ok: boolean
+  newMessage: LiveChat
 }
 
 const DetailStream: NextPage = () => {
-  const { user } = useUser();
-  const router = useRouter();
-  const { data, mutate } = useSWR<GetStreamResponse>(
-    router.query.id ? `/api/streams/${router?.query?.id}` : null,
-    {
-      refreshInterval: 1000,
-    }
-  );
+  const { user } = useUser()
+  const router = useRouter()
+  const { data, mutate } = useSWR<GetStreamResponse>(router.query.id ? `/api/streams/${router?.query?.id}` : null, {
+    refreshInterval: 1000,
+  })
 
-  const { register, handleSubmit, reset } = useForm<MessageType>();
-  const [createMessage, { loading, data: messageData }] =
-    useMutation<CreateMessageResponse>(
-      `/api/streams/${router.query.id}/liveChats`
-    );
-  const [endStream, { data: endStreamData }] = useMutation(
-    `/api/streams/${data?.stream?.id}`
-  );
-  const [popup, setPopup] = useState(false);
+  const { register, handleSubmit, reset } = useForm<MessageType>()
+  const [createMessage, { loading, data: messageData }] = useMutation<CreateMessageResponse>(
+    `/api/streams/${router.query.id}/liveChats`,
+  )
+  const [endStream, { data: endStreamData }] = useMutation(`/api/streams/${data?.stream?.id}`)
+  const [popup, setPopup] = useState(false)
   const onValid = (chat: MessageType) => {
-    if (loading) return;
-    reset();
+    if (loading) return
+    reset()
     mutate(
-      (prev) =>
+      prev =>
         prev &&
         ({
           ...prev,
@@ -77,19 +71,19 @@ const DetailStream: NextPage = () => {
             ],
           },
         } as any),
-      false
-    );
-    createMessage(chat);
-  };
+      false,
+    )
+    createMessage(chat)
+  }
 
   useEffect(() => {
     if (endStreamData && endStreamData.ok) {
-      router.push("/streams");
+      router.push("/streams")
     }
-  }, [endStreamData]);
+  }, [endStreamData])
 
   if (data?.ok === false) {
-    router.push("/streams");
+    router.push("/streams")
   }
 
   return (
@@ -118,9 +112,7 @@ const DetailStream: NextPage = () => {
                   {data?.stream?.title}
                 </h1>
                 <Link href={`/streams/streamList/${data?.stream?.userId}`}>
-                  <span className="cursor-pointer text-xs hover:underline">
-                    {data?.stream?.user?.name}
-                  </span>
+                  <span className="cursor-pointer text-xs hover:underline">{data?.stream?.user?.name}</span>
                 </Link>
               </div>
             </div>
@@ -134,29 +126,19 @@ const DetailStream: NextPage = () => {
               </button>
             ) : null}
           </div>
-          <span className="text-xs block mt-4 text-gray-600 font-bold">
-            이름: {data?.stream?.name}
-          </span>
-          <span className="text-xs block mt-1 text-gray-600 font-bold">
-            책정가: {data?.stream?.price}원
-          </span>
-          <p className="text-xs block mt-1 text-gray-600 font-bold">
-            제품설명: {data?.stream?.description}
-          </p>
+          <span className="text-xs block mt-4 text-gray-600 font-bold">이름: {data?.stream?.name}</span>
+          <span className="text-xs block mt-1 text-gray-600 font-bold">책정가: {data?.stream?.price}원</span>
+          <p className="text-xs block mt-1 text-gray-600 font-bold">제품설명: {data?.stream?.description}</p>
 
           {data?.stream?.streamKey !== "xxx" ? (
             <div className="flex flex-col bg-orange-100 p-2 rounded-md mt-5">
               <span className="font-bold">Stream Key (scret)</span>
               <span className="flex flex-col mt-2">
-                <span className="uppercase text-orange-700 text-sm font-bold">
-                  Key
-                </span>
+                <span className="uppercase text-orange-700 text-sm font-bold">Key</span>
                 <em className="text-xs">{data?.stream?.streamKey}</em>
               </span>
               <span className="flex flex-col mt-2">
-                <span className="uppercase text-orange-700 text-sm font-bold">
-                  Url
-                </span>
+                <span className="uppercase text-orange-700 text-sm font-bold">Url</span>
                 <em className="text-xs">{data?.stream?.streamUrl}</em>
               </span>
             </div>
@@ -165,7 +147,7 @@ const DetailStream: NextPage = () => {
         <div className="relative h-max w-full">
           <h2 className="text-2xl font-bold text-gray-900 mt-10">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-auto  px-4 space-y-4 mt-3 border rounded-md">
-            {data?.stream?.LiveChats?.map((chat) => (
+            {data?.stream?.LiveChats?.map(chat => (
               <UserMessage
                 key={chat.id}
                 message={chat.liveMessage}
@@ -192,15 +174,13 @@ const DetailStream: NextPage = () => {
       {popup ? (
         <form
           onSubmit={() => {
-            endStream({});
+            endStream({})
           }}
           className="absolute inset-0 m-auto h-max bg-slate-900 rounded-md w-[300px] border flex flex-col justify-center items-center py-4"
         >
           <span className="text-white">스트리밍을 종료하시겠습니까?</span>
           <div className="flex justify-center items-center w-full mt-5">
-            <button className="bg-orange-400 text-white w-20 rounded-sm hover:bg-orange-500">
-              네
-            </button>
+            <button className="bg-orange-400 text-white w-20 rounded-sm hover:bg-orange-500">네</button>
             <div
               onClick={() => setPopup(false)}
               className="cursor-pointer ml-5 rounded-sm border border-slate-300 bg-white w-20 text-center"
@@ -211,7 +191,7 @@ const DetailStream: NextPage = () => {
         </form>
       ) : null}
     </Layout>
-  );
-};
+  )
+}
 
-export default DetailStream;
+export default DetailStream

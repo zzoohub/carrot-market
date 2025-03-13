@@ -1,15 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../libs/server/client";
-import withHandler, { ResponseType } from "../../libs/server/withHandler";
-import { withApiSession } from "../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../libs/server/client"
+import withHandler, { ResponseType } from "../../libs/server/withHandler"
+import { withApiSession } from "../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     session: { user },
-  } = req;
+  } = req
 
   const reviews = await client.review.findMany({
     where: {
@@ -24,12 +21,12 @@ async function handler(
         },
       },
     },
-  });
+  })
 
   return res.json({
     ok: true,
     reviews,
-  });
+  })
 }
 
-export default withApiSession(withHandler({ methods: ["GET"], handler }));
+export default withApiSession(withHandler({ methods: ["GET"], handler }))

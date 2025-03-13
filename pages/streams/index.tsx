@@ -1,15 +1,15 @@
-import { Stream } from "@prisma/client";
-import type { NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import useSWR from "swr";
-import FloatingButton from "../components/floating-button";
-import Layout from "../components/layout";
+import { Stream } from "@prisma/client"
+import type { NextPage } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import { useState } from "react"
+import useSWR from "swr"
+import FloatingButton from "../components/floating-button"
+import Layout from "../components/layout"
 
 interface GetStreamsResponse {
-  id: boolean;
-  streams: Stream[];
+  id: boolean
+  streams: Stream[]
 }
 
 const Live: NextPage = () => {
@@ -17,9 +17,7 @@ const Live: NextPage = () => {
 
   return (
     <Layout seoTitle="Streams" title="라이브 스트리밍" hasTabBar>
-      <h3 className="text-center mt-10 text-orange-500 font-bold text-[28px]">
-        Comming Soon~
-      </h3>
+      <h3 className="text-center mt-10 text-orange-500 font-bold text-[28px]">Comming Soon~</h3>
       <p className="text-center text-sm font-bold text-zinc-800 mt-4">
         스트리밍 서비스는 비용 문제로 개발이 잠시 중단되었습니다.
         <br />더 좋은 서비스로 보답하겠습니다.
@@ -70,6 +68,6 @@ const Live: NextPage = () => {
         </FloatingButton>
       </div> */}
     </Layout>
-  );
-};
-export default Live;
+  )
+}
+export default Live

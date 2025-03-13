@@ -1,17 +1,17 @@
-import matter from "gray-matter";
-import { GetStaticProps, NextPage } from "next";
-import remarkHtml from "remark-html";
-import remarkParse from "remark-parse/lib";
-import { unified } from "unified";
-import Layout from "../components/layout";
+import matter from "gray-matter"
+import { GetStaticProps, NextPage } from "next"
+import remarkHtml from "remark-html"
+import remarkParse from "remark-parse/lib"
+import { unified } from "unified"
+import Layout from "../components/layout"
 
 interface FaqDetailInterface {
   data: {
-    question: string;
-    answer: string;
-  };
-  content: string;
-  slug: string;
+    question: string
+    answer: string
+  }
+  content: string
+  slug: string
 }
 
 const FaqDetail: NextPage<FaqDetailInterface> = ({ data, content, slug }) => {
@@ -34,8 +34,8 @@ const FaqDetail: NextPage<FaqDetailInterface> = ({ data, content, slug }) => {
         ></div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
 export function getStaticPaths() {
   // const files = readdirSync("./markdown/faq").map((file) => {
@@ -45,17 +45,12 @@ export function getStaticPaths() {
   return {
     paths: [],
     fallback: "blocking",
-  };
+  }
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data, content } = matter.read(
-    `./markdown/faq/${ctx.params?.slug}.md`
-  );
-  const { value } = await unified()
-    .use(remarkParse)
-    .use(remarkHtml)
-    .process(content);
+export const getStaticProps: GetStaticProps = async ctx => {
+  const { data, content } = matter.read(`./markdown/faq/${ctx.params?.slug}.md`)
+  const { value } = await unified().use(remarkParse).use(remarkHtml).process(content)
 
   return {
     props: {
@@ -63,7 +58,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       data,
       content: value,
     },
-  };
-};
+  }
+}
 
-export default FaqDetail;
+export default FaqDetail

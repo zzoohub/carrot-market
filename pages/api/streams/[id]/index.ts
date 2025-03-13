@@ -1,16 +1,13 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../../libs/server/withHandler"
+import { withApiSession } from "../../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     session: { user },
     query: { id },
-  } = req;
+  } = req
   if (req.method === "GET") {
     const stream = await client.stream.findUnique({
       where: {
@@ -37,16 +34,16 @@ async function handler(
           },
         },
       },
-    });
-    const isOwner = user?.id === stream?.userId;
+    })
+    const isOwner = user?.id === stream?.userId
     if (stream && !isOwner) {
-      stream.streamKey = "xxx";
-      stream.streamUrl = "xxx";
+      stream.streamKey = "xxx"
+      stream.streamUrl = "xxx"
     }
     return res.json({
       ok: true,
       stream,
-    });
+    })
   }
 
   if (req.method === "POST") {
@@ -57,13 +54,11 @@ async function handler(
       data: {
         live: false,
       },
-    });
+    })
     return res.json({
       ok: true,
-    });
+    })
   }
 }
 
-export default withApiSession(
-  withHandler({ methods: ["GET", "POST"], handler })
-);
+export default withApiSession(withHandler({ methods: ["GET", "POST"], handler }))

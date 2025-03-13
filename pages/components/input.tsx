@@ -1,32 +1,21 @@
-import { useForm } from "react-hook-form";
-import type { UseFormRegisterReturn } from "react-hook-form";
+import { useForm } from "react-hook-form"
+import type { UseFormRegisterReturn } from "react-hook-form"
 
 interface InputProps {
-  name: string;
-  label: string;
-  kind: "text" | "price" | "phone" | "title";
-  type: string;
-  required?: boolean;
-  register: UseFormRegisterReturn;
-  placeholder?: string;
+  name: string
+  label: string
+  kind: "text" | "price" | "phone" | "title"
+  type: string
+  required?: boolean
+  register: UseFormRegisterReturn
+  placeholder?: string
 }
-export default function Input({
-  name,
-  label,
-  kind,
-  type,
-  required,
-  register,
-  placeholder,
-}: InputProps) {
+export default function Input({ name, label, kind, type, required, register, placeholder }: InputProps) {
   return (
     <div>
       {kind === "text" ? (
         <div>
-          <label
-            className="mb-1 block text-sm font-medium text-gray-700"
-            htmlFor={name}
-          >
+          <label className="mb-1 block text-sm font-medium text-gray-700" htmlFor={name}>
             {label}
           </label>
           <div className="rounded-md relative flex  items-center shadow-sm">
@@ -44,10 +33,7 @@ export default function Input({
 
       {kind === "price" ? (
         <div>
-          <label
-            className="mb-1 block text-sm font-medium text-gray-700"
-            htmlFor={name}
-          >
+          <label className="mb-1 block text-sm font-medium text-gray-700" htmlFor={name}>
             {label}
           </label>
           <div className="rounded-md relative flex  items-center shadow-sm">
@@ -71,10 +57,7 @@ export default function Input({
 
       {kind === "phone" ? (
         <div>
-          <label
-            htmlFor={name}
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor={name} className="mb-1 block text-sm font-medium text-gray-700">
             {label}
           </label>
           <div className="flex rounded-md shadow-sm">
@@ -92,5 +75,5 @@ export default function Input({
         </div>
       ) : null}
     </div>
-  );
+  )
 }

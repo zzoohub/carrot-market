@@ -1,6 +1,6 @@
 interface ButtonProps {
-  text: string;
-  [key: string]: any;
+  text: string
+  [key: string]: any
 }
 export default function Button({ text, ...rest }: ButtonProps) {
   return (
@@ -10,5 +10,5 @@ export default function Button({ text, ...rest }: ButtonProps) {
     >
       {text}
     </button>
-  );
+  )
 }

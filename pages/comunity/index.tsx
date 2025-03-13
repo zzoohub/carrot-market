@@ -1,20 +1,20 @@
-import { Post, User } from "@prisma/client";
-import type { NextPage } from "next";
-import Link from "next/link";
-import FloatingButton from "../components/floating-button";
-import Layout from "../components/layout";
-import Loading from "../components/loading";
-import client from "../../libs/server/client";
+import { Post, User } from "@prisma/client"
+import type { NextPage } from "next"
+import Link from "next/link"
+import FloatingButton from "../components/floating-button"
+import Layout from "../components/layout"
+import Loading from "../components/loading"
+import client from "../../libs/server/client"
 
 interface PostWithUser extends Post {
-  user: User;
+  user: User
   _count: {
-    Wonderings: number;
-    Answers: number;
-  };
+    Wonderings: number
+    Answers: number
+  }
 }
 interface PostsResponse {
-  posts: PostWithUser[];
+  posts: PostWithUser[]
 }
 
 const Community: NextPage<PostsResponse> = ({ posts }) => {
@@ -29,7 +29,7 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
     <Layout seoTitle="Comunity" title="동네 커뮤니티" hasTabBar>
       {posts ? (
         <div className="px-4 py-6 relativ max-w-lg">
-          {posts?.map((post) => (
+          {posts?.map(post => (
             <Link href={`/comunity/${post?.id}`} key={post?.id}>
               <a className="mb-5 block">
                 {/* <span className="bg-gray-200 px-2 py-1 text-xs rounded-full"></span> */}
@@ -38,9 +38,7 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
                   {post?.question}
                 </div>
                 <div className="flex justify-between text-xs py-2 border-b border-dashed mt-3">
-                  <span className="text-[10px]">
-                    작성자: {post?.user?.name}
-                  </span>
+                  <span className="text-[10px]">작성자: {post?.user?.name}</span>
                   <span>{String(post?.createdAt.toString().slice(0, 10))}</span>
                 </div>
                 <div className="flex py-2 border-b-2">
@@ -59,9 +57,7 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
                     </svg>
-                    <span className="ml-1">
-                      궁금해요 {post?._count?.Wonderings}
-                    </span>
+                    <span className="ml-1">궁금해요 {post?._count?.Wonderings}</span>
                   </span>
                   <span className="flex items-center text-xs">
                     <svg
@@ -105,21 +101,21 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
         <Loading></Loading>
       )}
     </Layout>
-  );
-};
+  )
+}
 
 export async function getStaticProps() {
-  console.log("정적으로 생성중");
+  console.log("정적으로 생성중")
   const posts = await client?.post.findMany({
     include: {
       user: true,
       _count: true,
     },
-  });
+  })
   return {
     props: {
       posts: JSON.parse(JSON.stringify(posts)),
     },
-  };
+  }
 }
-export default Community;
+export default Community

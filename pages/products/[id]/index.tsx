@@ -1,77 +1,62 @@
-import { Product, User } from "@prisma/client";
-import type { NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import useSWR from "swr";
-import useMutation from "../../../libs/client/useMutation";
-import useUser from "../../../libs/client/useUser";
-import { cls, imgUrl } from "../../../libs/client/utils";
-import Button from "../../components/button";
-import Layout from "../../components/layout";
+import { Product, User } from "@prisma/client"
+import type { NextPage } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
+import useSWR from "swr"
+import useMutation from "../../../libs/client/useMutation"
+import useUser from "../../../libs/client/useUser"
+import { cls, imgUrl } from "../../../libs/client/utils"
+import Button from "../../components/button"
+import Layout from "../../components/layout"
 
 interface ProductWithUser extends Product {
-  user: User;
+  user: User
 }
 interface ProductResponse {
-  ok: boolean;
-  product: ProductWithUser;
-  relatedProduct: Product[];
-  isLiked: boolean;
+  ok: boolean
+  product: ProductWithUser
+  relatedProduct: Product[]
+  isLiked: boolean
 }
 
 const ItemDetail: NextPage = () => {
-  const router = useRouter();
-  const { user } = useUser();
-  const { data, mutate } = useSWR<ProductResponse>(
-    router.query.id ? `/api/products/${router.query.id}` : null
-  );
-  const [likeProduct] = useMutation(
-    `/api/products/${router.query.id}/favorite`
-  );
-  const [deleteProduct, { data: deleteData }] = useMutation(
-    `/api/products/${router.query.id}/delete`
-  );
+  const router = useRouter()
+  const { user } = useUser()
+  const { data, mutate } = useSWR<ProductResponse>(router.query.id ? `/api/products/${router.query.id}` : null)
+  const [likeProduct] = useMutation(`/api/products/${router.query.id}/favorite`)
+  const [deleteProduct, { data: deleteData }] = useMutation(`/api/products/${router.query.id}/delete`)
 
   const onFavClick = () => {
-    if (!data) return;
-    mutate({ ...data, isLiked: !data.isLiked }, false);
-    likeProduct({});
-  };
+    if (!data) return
+    mutate({ ...data, isLiked: !data.isLiked }, false)
+    likeProduct({})
+  }
 
   const unload = () => {
     if (confirm("상품을 삭제하시겠습까?")) {
-      deleteProduct({});
+      deleteProduct({})
     }
-  };
+  }
 
   useEffect(() => {
     if (deleteData?.ok) {
-      router.push("/");
+      router.push("/")
     }
-  }, [deleteData]);
+  }, [deleteData])
 
   return (
     <Layout seoTitle="Product" title={data?.product?.name} canGoBack>
       <div>
         <div className="px-4 py-10">
           <div className="relative w-full h-96 bg-gray-500 rounded-sm overflow-hidden">
-            <Image
-              src={imgUrl(data?.product?.image, "public")}
-              layout="fill"
-              className="object-cover"
-              priority
-            />
+            <Image src={imgUrl(data?.product?.image, "public")} layout="fill" className="object-cover" priority />
           </div>
           <div className="flex items-center mt-4">
             {data?.product?.user?.avatar ? (
               <div className="relative h-10 w-10 bg-gray-600 rounded-full overflow-hidden mr-2">
-                <Image
-                  src={imgUrl(data?.product?.user?.avatar, "avatar")}
-                  layout="fill"
-                  className="object-cover"
-                />
+                <Image src={imgUrl(data?.product?.user?.avatar, "avatar")} layout="fill" className="object-cover" />
               </div>
             ) : (
               <div className="h-10 w-10 bg-gray-600 rounded-full mr-2" />
@@ -80,23 +65,15 @@ const ItemDetail: NextPage = () => {
             <div>
               <p className="font-bold text-sm">{data?.product?.user?.name}</p>
               <Link
-                href={
-                  user?.id === data?.product?.userId
-                    ? `/profile`
-                    : `/users/profile/${data?.product?.user?.id}`
-                }
+                href={user?.id === data?.product?.userId ? `/profile` : `/users/profile/${data?.product?.user?.id}`}
               >
-                <a className="text-gray-600 text-xs mt-1">
-                  View profile &rarr;
-                </a>
+                <a className="text-gray-600 text-xs mt-1">View profile &rarr;</a>
               </Link>
             </div>
           </div>
           <div className="mt-4">
             <div className="flex justify-between">
-              <h1 className="text-sm text-slate-600 font-bold select-none">
-                {data?.product?.name}
-              </h1>
+              <h1 className="text-sm text-slate-600 font-bold select-none">{data?.product?.name}</h1>
               <button
                 className="border border-zinc-800 text-black-500 text-zinc-800 text-xs px-1 rounded-sm hover:font-bold"
                 onClick={unload}
@@ -104,12 +81,8 @@ const ItemDetail: NextPage = () => {
                 상품 내리기
               </button>
             </div>
-            <p className="text-[20px] font-bold select-none text-slate-800 mt-2">
-              {data?.product?.price}원
-            </p>
-            <p className="mt-2 text-[12px] text-justify">
-              {data?.product?.description}
-            </p>
+            <p className="text-[20px] font-bold select-none text-slate-800 mt-2">{data?.product?.price}원</p>
+            <p className="mt-2 text-[12px] text-justify">{data?.product?.description}</p>
             <div className="flex items-center justify-between mt-3">
               {user?.id !== data?.product?.userId ? (
                 <>
@@ -122,9 +95,7 @@ const ItemDetail: NextPage = () => {
                     onClick={onFavClick}
                     className={cls(
                       `p-2 ml-1 rounded-md`,
-                      data?.isLiked
-                        ? "hover:bg-red-100 text-red-500"
-                        : "text-gray-500 hover:bg-gray-100"
+                      data?.isLiked ? "hover:bg-red-100 text-red-500" : "text-gray-500 hover:bg-gray-100",
                     )}
                   >
                     {data?.isLiked ? (
@@ -174,24 +145,15 @@ const ItemDetail: NextPage = () => {
           <>
             {" "}
             <div className="p-5">
-              <h2 className="text-center font-semibold text-lg">
-                Similar items
-              </h2>
+              <h2 className="text-center font-semibold text-lg">Similar items</h2>
               <div className="grid grid-cols-2 mt-2 gap-5">
-                {data?.relatedProduct?.map((product) => (
+                {data?.relatedProduct?.map(product => (
                   <Link key={product.id} href={`/products/${product.id}`}>
                     <div className="select-none">
                       <div className="relative w-full aspect-square cursor-pointer rounded-sm">
-                        <Image
-                          src={imgUrl(product?.image, "public")}
-                          layout="fill"
-                          className="object-cover"
-                          priority
-                        />
+                        <Image src={imgUrl(product?.image, "public")} layout="fill" className="object-cover" priority />
                       </div>
-                      <h3 className="mt-1 text-sm cursor-pointer">
-                        {product.name}
-                      </h3>
+                      <h3 className="mt-1 text-sm cursor-pointer">{product.name}</h3>
                       <p className="text-xl font-bold">{product.price}원</p>
                     </div>
                   </Link>
@@ -202,7 +164,7 @@ const ItemDetail: NextPage = () => {
         ) : null}
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default ItemDetail;
+export default ItemDetail

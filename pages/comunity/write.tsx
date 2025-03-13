@@ -1,53 +1,50 @@
-import { Post, User } from "@prisma/client";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import useCoords from "../../libs/client/useCoords";
-import useMutation from "../../libs/client/useMutation";
-import Button from "../components/button";
-import Layout from "../components/layout";
-import Textarea from "../components/Textarea";
+import { Post, User } from "@prisma/client"
+import { NextPage } from "next"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import useCoords from "../../libs/client/useCoords"
+import useMutation from "../../libs/client/useMutation"
+import Button from "../components/button"
+import Layout from "../components/layout"
+import Textarea from "../components/Textarea"
 
 const Write: NextPage = () => {
   interface PostWithUser extends Post {
-    user: User;
+    user: User
   }
   interface PostResponse {
-    ok: boolean;
-    post: PostWithUser;
+    ok: boolean
+    post: PostWithUser
   }
   interface QuestionForm {
-    question: string;
+    question: string
   }
-  const router = useRouter();
-  const { latitude, longitude } = useCoords();
+  const router = useRouter()
+  const { latitude, longitude } = useCoords()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<QuestionForm>();
-  const [createPost, { loading, data }] =
-    useMutation<PostResponse>(`/api/posts`);
+  } = useForm<QuestionForm>()
+  const [createPost, { loading, data }] = useMutation<PostResponse>(`/api/posts`)
 
   const postUpload = (data: QuestionForm) => {
-    if (loading) return;
-    createPost({ ...data, latitude, longitude });
-  };
+    if (loading) return
+    createPost({ ...data, latitude, longitude })
+  }
   useEffect(() => {
     if (data && data.ok) {
-      console.log(data);
-      router.push(`/comunity/${data.post.id}`);
+      console.log(data)
+      router.push(`/comunity/${data.post.id}`)
     }
-  }, [data, router]);
+  }, [data, router])
 
   return (
     <Layout seoTitle="Post Upload" title="게시글 업로드" canGoBack>
       <form onSubmit={handleSubmit(postUpload)} className="px-4 py-6">
-        <span className="text-sm font-bold text-zinc-600">
-          게시글은 동네주민만 보게됩니다.
-        </span>
+        <span className="text-sm font-bold text-zinc-600">게시글은 동네주민만 보게됩니다.</span>
 
         <Textarea
           register={register("question", {
@@ -62,6 +59,6 @@ const Write: NextPage = () => {
         {errors ? errors.question?.message : ""}
       </span>
     </Layout>
-  );
-};
-export default Write;
+  )
+}
+export default Write

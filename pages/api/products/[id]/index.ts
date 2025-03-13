@@ -1,16 +1,13 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../../libs/server/withHandler"
+import { withApiSession } from "../../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     query: { id },
     session: { user },
-  } = req;
+  } = req
 
   const product = await client.product.findUnique({
     where: {
@@ -25,12 +22,12 @@ async function handler(
         },
       },
     },
-  });
-  const terms = product?.name.split(" ").map((word) => ({
+  })
+  const terms = product?.name.split(" ").map(word => ({
     name: {
       contains: word,
     },
-  }));
+  }))
   const relatedProduct = await client.product.findMany({
     where: {
       OR: terms,
@@ -40,7 +37,7 @@ async function handler(
         },
       },
     },
-  });
+  })
 
   const isLiked = Boolean(
     await client.favorite.findFirst({
@@ -51,15 +48,15 @@ async function handler(
       select: {
         id: true,
       },
-    })
-  );
+    }),
+  )
 
   res.json({
     ok: true,
     product,
     relatedProduct,
     isLiked,
-  });
+  })
 }
 
-export default withApiSession(withHandler({ methods: ["GET"], handler }));
+export default withApiSession(withHandler({ methods: ["GET"], handler }))

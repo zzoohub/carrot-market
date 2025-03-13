@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { cls } from "../libs/client/utils";
-import Button from "./components/button";
-import Input from "./components/input";
-import { FieldError, useForm } from "react-hook-form";
-import useMutation from "../libs/client/useMutation";
-import { useRouter } from "next/router";
-import { Token } from "@prisma/client";
+import { useEffect, useState } from "react"
+import { cls } from "../libs/client/utils"
+import Button from "./components/button"
+import Input from "./components/input"
+import { FieldError, useForm } from "react-hook-form"
+import useMutation from "../libs/client/useMutation"
+import { useRouter } from "next/router"
+import { Token } from "@prisma/client"
 
 export default function Enter() {
   interface LoginForm {
-    email: string;
-    phone: number;
+    email: string
+    phone: number
   }
   interface TokenForm {
-    token: number;
+    token: number
   }
   interface ConfirmResponse {
-    ok: boolean;
-    token: Token;
+    ok: boolean
+    token: Token
   }
 
   const {
@@ -25,49 +25,41 @@ export default function Enter() {
     reset,
     formState: { errors },
     handleSubmit,
-  } = useForm<LoginForm>();
-  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
-    useForm<TokenForm>();
+  } = useForm<LoginForm>()
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } = useForm<TokenForm>()
 
-  const [enter, { data, loading }] =
-    useMutation<ConfirmResponse>(`/api/users/enter`);
-  const [tokenConfirm, { loading: tokenLoading, data: tokenData }] =
-    useMutation(`/api/users/confirm`);
+  const [enter, { data, loading }] = useMutation<ConfirmResponse>(`/api/users/enter`)
+  const [tokenConfirm, { loading: tokenLoading, data: tokenData }] = useMutation(`/api/users/confirm`)
 
-  const [method, setMethod] = useState<"email" | "phone">("email");
+  const [method, setMethod] = useState<"email" | "phone">("email")
 
   const onEmailClick = () => {
-    reset();
-    setMethod("email");
-  };
+    reset()
+    setMethod("email")
+  }
   const onPhoneClick = () => {
-    reset();
-    setMethod("phone");
-  };
+    reset()
+    setMethod("phone")
+  }
 
   const onValid = (LoginInput: LoginForm) => {
-    enter(LoginInput);
-  };
+    enter(LoginInput)
+  }
   const onTokenValid = (TokenInput: TokenForm) => {
-    tokenConfirm(TokenInput);
-  };
-  const router = useRouter();
+    tokenConfirm(TokenInput)
+  }
+  const router = useRouter()
   useEffect(() => {
     if (tokenData?.ok) {
-      router.push("/");
+      router.push("/")
     }
-  }, [tokenData, router]);
+  }, [tokenData, router])
   return (
     <div>
-      <h3 className="text-orange-500 font-bold text-2xl text-center pt-6">
-        땅근마켓
-      </h3>
+      <h3 className="text-orange-500 font-bold text-2xl text-center pt-6">땅근마켓</h3>
       <div className="px-4">
         {data?.ok ? (
-          <form
-            onSubmit={tokenHandleSubmit(onTokenValid)}
-            className="mt-5 flex flex-col space-y-8 relative"
-          >
+          <form onSubmit={tokenHandleSubmit(onTokenValid)} className="mt-5 flex flex-col space-y-8 relative">
             <Input
               register={tokenRegister("token", {
                 required: "Confirm your token.",
@@ -94,9 +86,7 @@ export default function Enter() {
         ) : (
           <>
             <div>
-              <h5 className="text-center mt-5 text-gray-500 font-light text-sm">
-                Enter using:
-              </h5>
+              <h5 className="text-center mt-5 text-gray-500 font-light text-sm">Enter using:</h5>
 
               <div className="flex justify-between">
                 <button
@@ -105,7 +95,7 @@ export default function Enter() {
                     "text-center w-full text-m border-b-2 transition focus:outline-none font-bold",
                     method === "email"
                       ? "border-b-orange-400 py-2 text-orange-500"
-                      : "border-b-transparent text-gray-600"
+                      : "border-b-transparent text-gray-600",
                   )}
                 >
                   Email
@@ -116,7 +106,7 @@ export default function Enter() {
                     "text-center w-full text-m border-b-2 transition focus:outline-none font-semibold",
                     method === "phone"
                       ? "border-b-orange-500 py-2 text-orange-500"
-                      : "border-b-transparent text-gray-600"
+                      : "border-b-transparent text-gray-600",
                   )}
                 >
                   Phone
@@ -124,10 +114,7 @@ export default function Enter() {
               </div>
             </div>
 
-            <form
-              onSubmit={handleSubmit(onValid)}
-              className="mt-5 flex flex-col space-y-4 relative"
-            >
+            <form onSubmit={handleSubmit(onValid)} className="mt-5 flex flex-col space-y-4 relative">
               {method === "email" ? (
                 <Input
                   register={register("email", {
@@ -170,13 +157,7 @@ export default function Enter() {
                 {errors.email?.message}
               </span>
               <Button
-                text={
-                  loading
-                    ? "Loading..."
-                    : method === "email"
-                    ? "Get login link"
-                    : "Get one-time password"
-                }
+                text={loading ? "Loading..." : method === "email" ? "Get login link" : "Get one-time password"}
               ></Button>
             </form>
           </>
@@ -230,5 +211,5 @@ export default function Enter() {
         </div> */}
       </div>
     </div>
-  );
+  )
 }

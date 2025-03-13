@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
-import Layout from "../components/layout";
-import ProductList from "../components/product-list";
+import type { NextPage } from "next"
+import Layout from "../components/layout"
+import ProductList from "../components/product-list"
 
 const Bought: NextPage = () => {
   return (
@@ -9,7 +9,7 @@ const Bought: NextPage = () => {
         <ProductList kind="purchases"></ProductList>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Bought;
+export default Bought

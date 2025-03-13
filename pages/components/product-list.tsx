@@ -1,30 +1,30 @@
-import { Product, Sale } from "@prisma/client";
-import useSWR from "swr";
-import Item from "./item";
+import { Product, Sale } from "@prisma/client"
+import useSWR from "swr"
+import Item from "./item"
 
 interface ProductListProps {
-  kind: "sales" | "purchases" | "favorites" | "onSales";
+  kind: "sales" | "purchases" | "favorites" | "onSales"
 }
 
 export default function ProductList({ kind }: ProductListProps) {
   interface ProductWithCount extends Product {
     _count: {
-      Favorites: number;
-    };
+      Favorites: number
+    }
   }
   interface SaleWithProduct extends Sale {
-    product: ProductWithCount;
+    product: ProductWithCount
   }
   interface RecordResponse {
-    [key: string]: SaleWithProduct[];
+    [key: string]: SaleWithProduct[]
   }
-  const { data } = useSWR<RecordResponse>(`/api/users/me/${kind}`);
+  const { data } = useSWR<RecordResponse>(`/api/users/me/${kind}`)
 
-  console.log(data);
+  console.log(data)
 
   return data ? (
     <>
-      {data[kind].map((record) => (
+      {data[kind].map(record => (
         <Item
           key={record?.product?.id}
           id={record?.product?.id}
@@ -36,5 +36,5 @@ export default function ProductList({ kind }: ProductListProps) {
         ></Item>
       ))}
     </>
-  ) : null;
+  ) : null
 }

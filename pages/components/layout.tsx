@@ -1,28 +1,22 @@
-import React from "react";
-import Link from "next/link";
-import { cls } from "../../libs/client/utils";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import React from "react"
+import Link from "next/link"
+import { cls } from "../../libs/client/utils"
+import { useRouter } from "next/router"
+import Head from "next/head"
 
 interface LayoutProps {
-  title?: string;
-  canGoBack?: boolean;
-  hasTabBar?: boolean;
-  children: React.ReactNode;
-  seoTitle: string;
+  title?: string
+  canGoBack?: boolean
+  hasTabBar?: boolean
+  children: React.ReactNode
+  seoTitle: string
 }
 
-export default function Layout({
-  title,
-  canGoBack,
-  hasTabBar,
-  children,
-  seoTitle,
-}: LayoutProps) {
-  const router = useRouter();
+export default function Layout({ title, canGoBack, hasTabBar, children, seoTitle }: LayoutProps) {
+  const router = useRouter()
 
   function onClick() {
-    router.back();
+    router.back()
   }
 
   return (
@@ -44,11 +38,7 @@ export default function Layout({
               stroke="currentColor"
               strokeWidth={2}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </div>
         ) : null}
@@ -76,11 +66,7 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/comunity">
-            <a
-              className={
-                router.pathname === "/comunity" ? "text-orange-500" : ""
-              }
-            >
+            <a className={router.pathname === "/comunity" ? "text-orange-500" : ""}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -98,9 +84,7 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/chats">
-            <a
-              className={router.pathname === "/chats" ? "text-orange-500" : ""}
-            >
+            <a className={router.pathname === "/chats" ? "text-orange-500" : ""}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -118,11 +102,7 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/streams">
-            <a
-              className={
-                router.pathname === "/streams" ? "text-orange-500" : ""
-              }
-            >
+            <a className={router.pathname === "/streams" ? "text-orange-500" : ""}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -140,11 +120,7 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/profile">
-            <a
-              className={
-                router.pathname === "/profile" ? "text-orange-500" : ""
-              }
-            >
+            <a className={router.pathname === "/profile" ? "text-orange-500" : ""}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -164,5 +140,5 @@ export default function Layout({
         </nav>
       ) : null}
     </div>
-  );
+  )
 }

@@ -1,29 +1,26 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../../libs/server/withHandler"
+import { withApiSession } from "../../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     session: { user },
     query: { id },
-  } = req;
+  } = req
 
   const aleadyExist = await client.favorite.findFirst({
     where: {
       productId: +id!,
       userId: user?.id,
     },
-  });
+  })
   if (aleadyExist) {
     await client.favorite.delete({
       where: {
         id: aleadyExist.id,
       },
-    });
+    })
   } else {
     const likedProduct = await client.favorite.create({
       data: {
@@ -38,12 +35,12 @@ async function handler(
           },
         },
       },
-    });
+    })
   }
 
   res.json({
     ok: true,
-  });
+  })
 }
 
-export default withApiSession(withHandler({ methods: ["POST"], handler }));
+export default withApiSession(withHandler({ methods: ["POST"], handler }))

@@ -1,24 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../../libs/server/client";
-import withHandler, {
-  ResponseType,
-} from "../../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../../../libs/server/withHandler"
+import { withApiSession } from "../../../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     query: { id, buyerId },
     session: { user },
     body: { chat },
-  } = req;
+  } = req
   const product = await client.product.findUnique({
     where: {
       id: +id!,
     },
-  });
+  })
 
   if (req.method === "GET") {
     const chatRoom = await client.chatRoom.findFirst({
@@ -34,33 +29,33 @@ async function handler(
           },
         },
       },
-    });
+    })
 
     if (chatRoom) {
       return res.json({
         ok: true,
         product,
         chatRoom,
-      });
+      })
     }
 
     return res.json({
       ok: true,
       product,
-    });
+    })
   }
 
   if (req.method === "POST") {
-    let chatRoom;
+    let chatRoom
     const existingChatRoom = await client.chatRoom.findFirst({
       where: {
         productId: product?.id,
         sellerId: product?.userId,
         buyerId: buyerId ? +buyerId : user?.id,
       },
-    });
+    })
     if (existingChatRoom) {
-      chatRoom = existingChatRoom;
+      chatRoom = existingChatRoom
     } else {
       chatRoom = await client.chatRoom.create({
         data: {
@@ -80,7 +75,7 @@ async function handler(
             },
           },
         },
-      });
+      })
     }
 
     const newChat = await client.privateChat.create({
@@ -97,15 +92,13 @@ async function handler(
         },
         chat,
       },
-    });
+    })
 
     return res.json({
       ok: true,
       newChat,
-    });
+    })
   }
 }
 
-export default withApiSession(
-  withHandler({ methods: ["POST", "GET"], handler })
-);
+export default withApiSession(withHandler({ methods: ["POST", "GET"], handler }))

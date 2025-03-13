@@ -1,20 +1,17 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../../libs/server/client";
-import withHandler, { ResponseType } from "../../../../libs/server/withHandler";
-import { withApiSession } from "../../../../libs/server/withSession";
+import { NextApiRequest, NextApiResponse } from "next"
+import client from "../../../../libs/server/client"
+import withHandler, { ResponseType } from "../../../../libs/server/withHandler"
+import { withApiSession } from "../../../../libs/server/withSession"
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   const {
     session: { user },
     query: { id },
-  } = req;
+  } = req
 
   const product = await client.product.findUnique({
     where: { id: +id! },
-  });
+  })
 
   if (req.method === "POST") {
     await client.product.update({
@@ -22,7 +19,7 @@ async function handler(
       data: {
         traded: true,
       },
-    });
+    })
 
     const saled = await client.sale.create({
       data: {
@@ -37,7 +34,7 @@ async function handler(
           },
         },
       },
-    });
+    })
 
     const purchased = await client.purchase.create({
       data: {
@@ -52,11 +49,11 @@ async function handler(
           },
         },
       },
-    });
+    })
     return res.json({
       ok: true,
-    });
+    })
   }
 }
 
-export default withApiSession(withHandler({ methods: ["POST"], handler }));
+export default withApiSession(withHandler({ methods: ["POST"], handler }))
